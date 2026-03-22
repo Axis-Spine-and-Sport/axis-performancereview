@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Axis Spine & Sport — Performance Review</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background: #eef0f2; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #eef0f2; }
+    ::-webkit-scrollbar-thumb { background: #c3cace; border-radius: 3px; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const ROLES = ["Office Manager","Chiropractor","Chiropractic Assistant","Front Desk","Virtual Agent","Massage Therapist","Director of Marketing"];
+const CLINIC_AGES = ["0–3 months","3–6 months","6–9 months","9–12 months","12+ months"];
+const STATUS_OPTIONS = ["Green","Yellow","Red"];
+const PASS_FAIL = ["Pass","Fail"];
+const RATING_OPTIONS = ["Needs Improvement","Meets Expectations","Exceeds","Elite"];
+
+const GENERAL_KPIS = [
+  { id: "trainual_completion", label: "Trainual Completion", standard: "100% assigned" },
+  { id: "disciplinary_standing", label: "Disciplinary Standing", standard: "No warnings (6 mo)" },
+  { id: "attendance", label: "Attendance", standard: "<10 missed days (6 mo)" },
+  { id: "professionalism", label: "Professionalism", standard: "Meets culture standard" },
+  { id: "company_events", label: "Company Events Attendance", standard: "100% attendance" },
+];
+
+const TIERED = {
+  om_revenue: {"0–3 months":"≥ $30K / mo","3–6 months":"≥ $50K / mo","6–9 months":"≥ $80K / mo","9–12 months":"≥ $110K / mo","12+ months":"≥ $150K / mo"},
+  om_new_patients: {"0–3 months":"≥ 40 NPs / mo","3–6 months":"≥ 60 NPs / mo","6–9 months":"≥ 80 NPs / mo","9–12 months":"≥ 100 NPs / mo","12+ months":"≥ 120 NPs / mo"},
+  dc_visit_volume: {"0–3 months":"≥ 350 visits / mo","3–6 months":"≥ 525 visits / mo","6–9 months":"≥ 700 visits / mo","9–12 months":"≥ 875 visits / mo","12+ months":"≥ 1,050 visits / mo"},
+  ca_google_reviews: {"0–3 months":"≥ 10 reviews / mo","3–6 months":"≥ 20 reviews / mo","6–9 months":"≥ 30 reviews / mo","9–12 months":"≥ 40 reviews / mo","12+ months":"≥ 50 reviews / mo"},
+  ca_reexams: {"0–3 months":"≥ 15 / mo","3–6 months":"≥ 25 / mo","6–9 months":"≥ 40 / mo","9–12 months":"≥ 55 / mo","12+ months":"≥ 70 / mo"},
+  ca_transition_exams: {"0–3 months":"≥ 5 / mo","3–6 months":"≥ 10 / mo","6–9 months":"≥ 18 / mo","9–12 months":"≥ 25 / mo","12+ months":"≥ 35 / mo"},
+  fd_massage_volume: {"0–3 months":"≥ 30 / mo","3–6 months":"≥ 50 / mo","6–9 months":"≥ 75 / mo","9–12 months":"≥ 100 / mo","12+ months":"≥ 130 / mo"},
+};
+
+const STATIC_TARGETS = {
+  om_staff_training:"100%", om_software_readiness:"100%", om_bcbs_claims:"< 40",
+  dc_cash_close:"≥ 25%", dc_hi_pi_consult:"≥ 35%", dc_hi_pi_mri:"≥ 40%", dc_chart_completion:"100% by EOD Friday",
+  ca_dme_hi:"≥ 75%",
+  fd_np_show:"≥ 80%", fd_rof_show:"≥ 80%", fd_rof_scheduled:"≥ 50%", fd_cancel_rate:"< 10%", fd_day1_day2:"100%", fd_airtable_followups:"< 10",
+  va_followups:"< 10", va_pi_followups:"< 5", va_lien_deadlines:"0", va_hospital_records:"0", va_final_bills:"0", va_verifications:"100%", va_day1_day2_errors:"Zero",
+  mt_utilization:"≥ 75%",
+  dm_linkedelf_nps:"8 / clinic / mo", dm_pi_referrals:"8 / clinic / mo", dm_unattached_pi:"4 / clinic / mo",
+};
+
+function resolveTarget(kpiId, clinicAge) {
+  if (TIERED[kpiId]) return (clinicAge && TIERED[kpiId][clinicAge]) ? TIERED[kpiId][clinicAge] : "Select clinic age ↑";
+  return STATIC_TARGETS[kpiId] || "—";
+}
+
+const ROLE_KPIS = {
+  "Office Manager": [{id:"om_revenue",label:"Revenue (by clinic age)"},{id:"om_new_patients",label:"New Patients"},{id:"om_staff_training",label:"Staff Training Completion"},{id:"om_software_readiness",label:"Software Readiness"},{id:"om_bcbs_claims",label:"BCBS Claims Outstanding"}],
+  "Chiropractor": [{id:"dc_cash_close",label:"Cash Close Rate"},{id:"dc_hi_pi_consult",label:"HI/PI Medical Consult"},{id:"dc_hi_pi_mri",label:"HI/PI MRI Rate"},{id:"dc_chart_completion",label:"Chart Completion (EOD Friday)"},{id:"dc_visit_volume",label:"Visit Volume (monthly)"}],
+  "Chiropractic Assistant": [{id:"ca_google_reviews",label:"Google Reviews"},{id:"ca_dme_hi",label:"DME (HI Patients)"},{id:"ca_reexams",label:"Re-Exams"},{id:"ca_transition_exams",label:"Transition Exams"}],
+  "Front Desk": [{id:"fd_np_show",label:"NP Show Rate"},{id:"fd_rof_show",label:"ROF Show Rate"},{id:"fd_rof_scheduled",label:"ROF Scheduled Out"},{id:"fd_cancel_rate",label:"Cancellation Rate"},{id:"fd_day1_day2",label:"Day 1 / Day 2 Accuracy"},{id:"fd_airtable_followups",label:"Airtable Follow-Ups"},{id:"fd_massage_volume",label:"Massage Volume"}],
+  "Virtual Agent": [{id:"va_followups",label:"Follow Ups Required"},{id:"va_pi_followups",label:"Pending PI Follow Ups"},{id:"va_lien_deadlines",label:"Lien Filing Deadlines"},{id:"va_hospital_records",label:"Hospital Records"},{id:"va_final_bills",label:"Final Bills/Records"},{id:"va_verifications",label:"Verifications on Time"},{id:"va_day1_day2_errors",label:"Day 1 / Day 2 Errors"}],
+  "Massage Therapist": [{id:"mt_utilization",label:"Schedule Utilization"}],
+  "Director of Marketing": [{id:"dm_linkedelf_nps",label:"LinkedElf NPs"},{id:"dm_pi_referrals",label:"Incoming PI Referrals"},{id:"dm_unattached_pi",label:"Unattached PI Cases"}],
+};
+
+const B = {
+  gold:"#e5be5e", goldLight:"#f5e6b8", goldDark:"#c9a23e", goldSubtle:"rgba(229,190,94,0.12)",
+  dkGrey:"#767b7f", ltGrey:"#c3cace", ltGreyBg:"#eef0f2",
+  white:"#ffffff", black:"#000000", offBlack:"#1a1a1a",
+};
+
+function init() {
+  const s = {};
+  ROLES.forEach(r => {
+    s[r] = { employee_name:"", reviewer_name:"", clinic_location:"", clinic_age:"", review_period:"", review_date:"", general:{}, role_kpis:{}, strengths:"", gaps:"", root_cause:"", action_plan:"", training_needed:"", overall_rating:"", reviewer_notes:"" };
+    GENERAL_KPIS.forEach(k => { s[r].general[k.id] = ""; });
+    (ROLE_KPIS[r]||[]).forEach(k => { s[r].role_kpis[k.id] = { actual:"", status:"" }; });
+  });
+  return s;
+}
+
+const elig = g => { const v = Object.values(g); return v.length && v.every(x=>x) ? v.every(x=>x==="Pass") : null; };
+const kpiPct = rk => { const e = Object.values(rk).filter(x=>x.status); return e.length ? Math.round(e.filter(x=>x.status==="Green").length/e.length*100) : null; };
+
+const toJSON = (role, d) => {
+  const r = {"Employee Name":d.employee_name, Role:role, Reviewer:d.reviewer_name, "Clinic Location":d.clinic_location, "Clinic Age":d.clinic_age, "Review Period":d.review_period, "Review Date":d.review_date, "In Good Standing":elig(d.general)?"Yes":"No"};
+  GENERAL_KPIS.forEach(k => r[`General: ${k.label}`] = d.general[k.id]||"");
+  (ROLE_KPIS[role]||[]).forEach(k => {
+    r[`${k.label} – Target`] = resolveTarget(k.id, d.clinic_age);
+    r[`${k.label} – Actual`] = d.role_kpis[k.id]?.actual||"";
+    r[`${k.label} – Status`] = d.role_kpis[k.id]?.status||"";
+  });
+  r["KPI % Met"] = kpiPct(d.role_kpis)??""
+  r.Strengths=d.strengths; r.Gaps=d.gaps; r["Root Cause"]=d.root_cause;
+  r["Action Plan (90-day)"]=d.action_plan; r["Training Needed"]=d.training_needed;
+  r["Overall Rating"]=d.overall_rating; r["Reviewer Notes"]=d.reviewer_notes;
+  return r;
+};
+
+const iS = { width:"100%", border:`1px solid ${B.ltGrey}`, borderRadius:6, padding:"7px 10px", fontSize:13, outline:"none", color:B.black, boxSizing:"border-box", fontFamily:"inherit", background:B.white };
+const fG = e => e.target.style.borderColor = B.gold;
+const bG = e => e.target.style.borderColor = B.ltGrey;
+
+const Sel = ({value, onChange, options, placeholder}) => (
+  <select value={value} onChange={e=>onChange(e.target.value)} style={iS} onFocus={fG} onBlur={bG}>
+    <option value="">{placeholder||"Select..."}</option>
+    {options.map(o=><option key={o} value={o}>{o}</option>)}
+  </select>
+);
+const Inp = ({value, onChange, placeholder, type="text"}) => (
+  <input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} style={iS} onFocus={fG} onBlur={bG} />
+);
+const Txt = ({value, onChange, placeholder, rows=3}) => (
+  <textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={rows} style={{...iS, resize:"vertical"}} onFocus={fG} onBlur={bG} />
+);
+
+const StatusBadge = ({value}) => {
+  const m = {Green:{bg:"#e6f4ea",c:"#1a7a3a",bd:"#a8d5b8"},Yellow:{bg:B.goldLight,c:B.goldDark,bd:B.gold},Red:{bg:"#fde8e8",c:"#b91c1c",bd:"#f5a3a3"},Pass:{bg:"#e6f4ea",c:"#1a7a3a",bd:"#a8d5b8"},Fail:{bg:"#fde8e8",c:"#b91c1c",bd:"#f5a3a3"}};
+  const s = m[value]||{bg:B.ltGreyBg,c:B.dkGrey,bd:B.ltGrey};
+  return <span style={{background:s.bg,color:s.c,border:`1px solid ${s.bd}`,fontSize:11,fontWeight:600,padding:"2px 10px",borderRadius:4,letterSpacing:0.3}}>{value||"—"}</span>;
+};
+
+const Card = ({children, style}) => <div style={{background:B.white,borderRadius:12,border:`1px solid ${B.ltGrey}`,padding:24,...style}}>{children}</div>;
+const SBadge = ({n, bg}) => <span style={{width:26,height:26,borderRadius:6,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800,color:B.white,background:bg,marginRight:8,flexShrink:0}}>{n}</span>;
+const STitle = ({children}) => <div style={{fontSize:14,fontWeight:800,textTransform:"uppercase",letterSpacing:1.2,color:B.offBlack,display:"flex",alignItems:"center"}}>{children}</div>;
+const Label = ({children}) => <label style={{display:"block",fontSize:11,fontWeight:500,color:B.dkGrey,marginBottom:4,letterSpacing:0.3}}>{children}</label>;
+
+const th = {textAlign:"left",padding:"8px 12px",fontSize:11,fontWeight:600,color:B.dkGrey,letterSpacing:0.4,textTransform:"uppercase",borderBottom:`2px solid ${B.ltGrey}`,background:B.ltGreyBg};
+const td = {padding:"8px 12px",borderBottom:`1px solid ${B.ltGreyBg}`,verticalAlign:"middle"};
+const btnBase = {border:"none",borderRadius:8,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",letterSpacing:0.3,fontFamily:"inherit"};
+
+function App() {
+  const [fd, setFd] = React.useState(init);
+  const [ar, setAr] = React.useState("Office Manager");
+  const [ej, setEj] = React.useState(null);
+  const [cm, setCm] = React.useState("");
+  const [syncing, setSyncing] = React.useState(false);
+  const [syncMsg, setSyncMsg] = React.useState("");
+
+  const WORKER_URL = "https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev";
+
+  const d = fd[ar];
+  const up = (f,v) => setFd(p=>({...p,[ar]:{...p[ar],[f]:v}}));
+  const upG = (id,v) => setFd(p=>({...p,[ar]:{...p[ar],general:{...p[ar].general,[id]:v}}}));
+  const upK = (id,f,v) => setFd(p=>({...p,[ar]:{...p[ar],role_kpis:{...p[ar].role_kpis,[id]:{...p[ar].role_kpis[id],[f]:v}}}}));
+
+  const el = elig(d.general);
+  const kp = kpiPct(d.role_kpis);
+  const roleHasTiered = (ROLE_KPIS[ar]||[]).some(k=>TIERED[k.id]);
+
+  const copy = () => { navigator.clipboard.writeText(JSON.stringify(ej,null,2)); setCm("Copied!"); setTimeout(()=>setCm(""),2000); };
+
+  const syncToAirtable = async (data) => {
+    setSyncing(true); setSyncMsg("");
+    try {
+      const res = await fetch(`${WORKER_URL}/api/airtable`, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      setSyncMsg(result.records ? "✓ Synced to Airtable!" : "⚠ Sync issue — check Worker logs");
+    } catch(e) {
+      setSyncMsg("✗ Sync failed — check Worker URL");
+    }
+    setSyncing(false);
+    setTimeout(()=>setSyncMsg(""),4000);
+  };
+
+  return (
+    <div style={{fontFamily:"'Montserrat',sans-serif",minHeight:"100vh",background:B.ltGreyBg}}>
+
+      {/* HEADER */}
+      <div style={{background:`linear-gradient(135deg,${B.black} 0%,${B.offBlack} 70%,#222 100%)`}}>
+        <div style={{height:4,background:`linear-gradient(90deg,${B.gold},${B.goldLight},${B.gold})`}} />
+        <div style={{maxWidth:960,margin:"0 auto",padding:"20px 20px 18px"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12}}>
+            <div style={{display:"flex",alignItems:"center",gap:14}}>
+              <div style={{width:44,height:44,borderRadius:10,background:B.gold,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:18,color:B.black,letterSpacing:-1,boxShadow:`0 2px 12px ${B.gold}44`}}>AS</div>
+              <div>
+                <h1 style={{fontSize:22,fontWeight:800,letterSpacing:0.2,margin:0,lineHeight:1.2,color:B.white}}>Axis Spine <span style={{color:B.gold}}>&</span> Sport</h1>
+                <p style={{fontSize:12,color:B.ltGrey,margin:0,fontWeight:400,letterSpacing:0.5}}>QUARTERLY PERFORMANCE REVIEW SCORECARD</p>
+              </div>
+            </div>
+            <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+              {syncMsg && <span style={{fontSize:12,fontWeight:600,color:syncMsg.startsWith("✓")?"#4ade80":"#fca5a5"}}>{syncMsg}</span>}
+              <button onClick={()=>{const data=toJSON(ar,d);setEj(data);syncToAirtable(data);}} style={{...btnBase,background:B.gold,color:B.black,opacity:syncing?.7:1}}>{syncing?"Syncing...":"Sync This Role"}</button>
+              <button onClick={()=>{const data=ROLES.map(r=>toJSON(r,fd[r]));setEj(data);syncToAirtable(data);}} style={{...btnBase,background:"transparent",color:B.white,border:`1px solid ${B.dkGrey}`}}>Sync All Roles</button>
+              <button onClick={()=>setEj(toJSON(ar,d))} style={{...btnBase,background:"transparent",color:B.ltGrey,border:`1px solid #444`}}>JSON Only</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* TABS */}
+      <div style={{background:B.white,borderBottom:`1px solid ${B.ltGrey}`,position:"sticky",top:0,zIndex:10,boxShadow:"0 1px 4px rgba(0,0,0,0.06)"}}>
+        <div style={{maxWidth:960,margin:"0 auto",display:"flex",overflowX:"auto",padding:"0 20px"}}>
+          {ROLES.map(role=>(
+            <button key={role} onClick={()=>{setAr(role);setEj(null);}} style={{whiteSpace:"nowrap",padding:"14px 16px",fontSize:12,fontWeight:ar===role?700:400,border:"none",borderBottom:ar===role?`3px solid ${B.gold}`:"3px solid transparent",background:"none",color:ar===role?B.black:B.dkGrey,cursor:"pointer",letterSpacing:0.2,fontFamily:"inherit"}}>{role}</button>
+          ))}
+        </div>
+      </div>
+
+      {/* BODY */}
+      <div style={{maxWidth:960,margin:"0 auto",padding:"24px 20px",display:"flex",flexDirection:"column",gap:20}}>
+
+        {/* 1: Employee Info */}
+        <Card>
+          <STitle><SBadge n="1" bg={B.black} />Employee Information</STitle>
+          <div style={{marginTop:16,display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:14}}>
+            <div><Label>Employee Name</Label><Inp value={d.employee_name} onChange={v=>up("employee_name",v)} placeholder="Full name" /></div>
+            <div><Label>Reviewer Name</Label><Inp value={d.reviewer_name} onChange={v=>up("reviewer_name",v)} placeholder="Manager / reviewer" /></div>
+            <div><Label>Clinic Location</Label><Inp value={d.clinic_location} onChange={v=>up("clinic_location",v)} placeholder="e.g. Tempe, Gilbert, Phoenix" /></div>
+            <div><Label>Clinic Age</Label><Sel value={d.clinic_age} onChange={v=>up("clinic_age",v)} options={CLINIC_AGES} /></div>
+            <div><Label>Review Period</Label><Inp value={d.review_period} onChange={v=>up("review_period",v)} placeholder="e.g. Q1 2026 (Jan–Mar)" /></div>
+            <div><Label>Review Date</Label><Inp type="date" value={d.review_date} onChange={v=>up("review_date",v)} /></div>
+          </div>
+        </Card>
+
+        {/* 2: Eligibility */}
+        <Card>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
+            <STitle><SBadge n="2" bg={B.black} />Eligibility Gate — General KPIs</STitle>
+            {el!==null && <span style={{fontSize:11,fontWeight:700,padding:"4px 14px",borderRadius:20,background:el?"#e6f4ea":"#fde8e8",color:el?"#1a7a3a":"#b91c1c",border:`1px solid ${el?"#a8d5b8":"#f5a3a3"}`}}>{el?"✓ IN GOOD STANDING":"✗ NOT ELIGIBLE"}</span>}
+          </div>
+          <p style={{fontSize:11,color:B.dkGrey,margin:"8px 0 14px",fontStyle:"italic"}}>Any Fail = not bonus-eligible, not promotion-eligible.</p>
+          <div style={{overflowX:"auto"}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
+              <thead><tr><th style={th}>KPI</th><th style={th}>Standard</th><th style={{...th,width:130,textAlign:"center"}}>Result</th><th style={{...th,width:80,textAlign:"center"}}>Status</th></tr></thead>
+              <tbody>
+                {GENERAL_KPIS.map(k=>(
+                  <tr key={k.id}>
+                    <td style={{...td,fontWeight:600,color:B.black}}>{k.label}</td>
+                    <td style={{...td,color:B.dkGrey,fontSize:12}}>{k.standard}</td>
+                    <td style={{...td,textAlign:"center"}}><Sel value={d.general[k.id]} onChange={v=>upG(k.id,v)} options={PASS_FAIL} placeholder="—" /></td>
+                    <td style={{...td,textAlign:"center"}}><StatusBadge value={d.general[k.id]} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+
+        {/* 3: Role KPIs */}
+        <Card>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
+            <STitle><SBadge n="3" bg={B.gold} /><span style={{color:B.black}}>{ar}</span><span style={{color:B.dkGrey,fontWeight:500,marginLeft:6}}>— Role KPIs</span></STitle>
+            {kp!==null && <span style={{fontSize:11,fontWeight:700,padding:"4px 14px",borderRadius:20,background:kp>=100?"#e6f4ea":kp>=90?B.goldLight:"#fde8e8",color:kp>=100?"#1a7a3a":kp>=90?B.goldDark:"#b91c1c"}}>{kp}% GREEN</span>}
+          </div>
+          {roleHasTiered && !d.clinic_age && (
+            <div style={{marginTop:10,padding:"8px 14px",background:B.goldSubtle,border:`1px solid ${B.gold}44`,borderRadius:8,fontSize:12,color:B.goldDark,display:"flex",alignItems:"center",gap:6}}>
+              <span style={{fontSize:15}}>⚡</span>
+              <span>Select a <strong>Clinic Age</strong> above to populate tiered targets automatically.</span>
+            </div>
+          )}
+          <div style={{overflowX:"auto"}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:13,marginTop:14}}>
+              <thead><tr><th style={th}>KPI</th><th style={{...th,width:155}}>Target</th><th style={{...th,width:140}}>Actual</th><th style={{...th,width:130,textAlign:"center"}}>Status</th><th style={{...th,width:80,textAlign:"center"}}>Badge</th></tr></thead>
+              <tbody>
+                {(ROLE_KPIS[ar]||[]).map(k=>{
+                  const target = resolveTarget(k.id, d.clinic_age);
+                  const isTiered = !!TIERED[k.id];
+                  const noAge = isTiered && !d.clinic_age;
+                  return (
+                    <tr key={k.id}>
+                      <td style={{...td,fontWeight:600,color:B.black}}>{k.label}</td>
+                      <td style={{...td,fontSize:12,color:noAge?B.ltGrey:isTiered?B.goldDark:B.dkGrey,fontWeight:isTiered&&d.clinic_age?600:400,fontStyle:noAge?"italic":"normal"}}>
+                        {isTiered && d.clinic_age && <span style={{display:"inline-block",width:6,height:6,borderRadius:3,background:B.gold,marginRight:6,verticalAlign:"middle"}} />}
+                        {target}
+                      </td>
+                      <td style={td}><Inp value={d.role_kpis[k.id]?.actual||""} onChange={v=>upK(k.id,"actual",v)} placeholder="Enter value" /></td>
+                      <td style={{...td,textAlign:"center"}}><Sel value={d.role_kpis[k.id]?.status||""} onChange={v=>upK(k.id,"status",v)} options={STATUS_OPTIONS} placeholder="—" /></td>
+                      <td style={{...td,textAlign:"center"}}><StatusBadge value={d.role_kpis[k.id]?.status||""} /></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+
+        {/* 4: Qualitative */}
+        <Card>
+          <STitle><SBadge n="4" bg={B.black} />Quarterly Review — Qualitative Assessment</STitle>
+          <div style={{marginTop:16,display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:14}}>
+            <div><Label>Top 3 Strengths / Wins</Label><Txt value={d.strengths} onChange={v=>up("strengths",v)} placeholder="List the employee's top 3 wins this quarter..." /></div>
+            <div><Label>Bottom 2 KPI Gaps</Label><Txt value={d.gaps} onChange={v=>up("gaps",v)} placeholder="Weakest KPIs and what fell short..." /></div>
+            <div><Label>Root Cause Analysis</Label><Txt value={d.root_cause} onChange={v=>up("root_cause",v)} placeholder="Why did gaps occur?" /></div>
+            <div><Label>90-Day Action Plan</Label><Txt value={d.action_plan} onChange={v=>up("action_plan",v)} placeholder="Specific commitments for next quarter..." /></div>
+            <div><Label>Training / Support Needed</Label><Txt value={d.training_needed} onChange={v=>up("training_needed",v)} placeholder="Courses, mentorship, tools..." rows={2} /></div>
+            <div><Label>Reviewer Notes</Label><Txt value={d.reviewer_notes} onChange={v=>up("reviewer_notes",v)} placeholder="Additional context..." rows={2} /></div>
+          </div>
+        </Card>
+
+        {/* 5: Rating */}
+        <Card>
+          <STitle><SBadge n="5" bg={B.black} />Overall Performance Rating</STitle>
+          <div style={{marginTop:16,display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",gap:10}}>
+            {RATING_OPTIONS.map(r=>{
+              const sel = d.overall_rating===r;
+              const rs = {"Needs Improvement":{bg:"#fde8e8",c:"#b91c1c",bd:"#f5a3a3",i:"⚠"},"Meets Expectations":{bg:B.ltGreyBg,c:B.black,bd:B.ltGrey,i:"✓"},Exceeds:{bg:B.goldLight,c:B.goldDark,bd:B.gold,i:"★"},Elite:{bg:B.offBlack,c:B.gold,bd:B.gold,i:"🏆"}}[r];
+              return (
+                <button key={r} onClick={()=>up("overall_rating",r)} style={{padding:"14px 12px",borderRadius:10,cursor:"pointer",fontSize:13,fontWeight:700,textAlign:"center",background:sel?rs.bg:B.white,color:sel?rs.c:B.dkGrey,border:`2px solid ${sel?rs.bd:B.ltGrey}`,boxShadow:sel?`0 0 0 3px ${rs.bd}33`:"none",fontFamily:"inherit"}}>
+                  <span style={{marginRight:6}}>{rs.i}</span>{r}
+                </button>
+              );
+            })}
+          </div>
+          {d.overall_rating && kp!==null && (
+            <div style={{marginTop:14,padding:14,background:B.ltGreyBg,borderRadius:8,fontSize:12,color:B.dkGrey,borderLeft:`4px solid ${B.gold}`}}>
+              <strong style={{color:B.black}}>Advancement Logic: </strong>
+              {kp<90 && "Below 90% KPIs met — Needs Improvement tier."}
+              {kp>=90 && kp<100 && "90–99% KPIs met — Meets Expectations tier."}
+              {kp>=100 && "100% KPIs met — eligible for Exceeds or Elite (if growth KPIs exceeded)."}
+              {!el && " ⚠ General KPI fail: not bonus-eligible."}
+              {el && " ✓ In good standing: bonus-eligible."}
+            </div>
+          )}
+        </Card>
+
+        {/* Export Panel */}
+        {ej && (
+          <div style={{background:B.offBlack,borderRadius:12,border:"1px solid #333",padding:24,color:B.white}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8,marginBottom:12}}>
+              <h2 style={{fontSize:13,fontWeight:800,textTransform:"uppercase",letterSpacing:1,margin:0,display:"flex",alignItems:"center",gap:8}}>
+                <span style={{color:B.gold,fontSize:16}}>⬡</span> Airtable-Ready JSON
+              </h2>
+              <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                {cm && <span style={{color:"#4ade80",fontSize:12,fontWeight:600}}>{cm}</span>}
+                <button onClick={copy} style={{...btnBase,background:B.gold,color:B.black}}>Copy JSON</button>
+                <button onClick={()=>setEj(null)} style={{background:"none",color:B.dkGrey,border:"none",fontSize:12,cursor:"pointer",padding:"6px 8px",fontFamily:"inherit"}}>Close</button>
+              </div>
+            </div>
+            <pre style={{background:"#111",borderRadius:8,padding:16,fontSize:11,overflowX:"auto",maxHeight:280,overflowY:"auto",color:B.ltGrey,lineHeight:1.6,margin:0,border:"1px solid #333"}}>{JSON.stringify(ej,null,2)}</pre>
+          </div>
+        )}
+
+        {/* Airtable Guide */}
+        <div style={{background:`${B.goldLight}44`,border:`1px solid ${B.gold}66`,borderRadius:12,padding:20}}>
+          <h3 style={{fontSize:13,fontWeight:800,color:B.black,margin:"0 0 8px",display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontSize:15}}>📋</span> Airtable Integration Guide
+          </h3>
+          <div style={{fontSize:12,color:B.offBlack,lineHeight:1.7}}>
+            <p style={{margin:"0 0 6px"}}><strong>Table:</strong> Create a "Performance Reviews" table with columns matching each JSON field.</p>
+            <p style={{margin:"0 0 6px"}}><strong>Field Types:</strong> Single Select for Status (Green/Yellow/Red), Pass/Fail, and Overall Rating. Long Text for Strengths, Gaps, Action Plan. Date for Review Date. Percent for KPI % Met.</p>
+            <p style={{margin:"0 0 6px"}}><strong>Sync Buttons:</strong> "Sync This Role" sends the current role's data to Airtable via the Cloudflare Worker. "Sync All Roles" sends all seven roles at once. Update the WORKER_URL constant in the file before deploying.</p>
+            <p style={{margin:"0 0 6px"}}><strong>Import:</strong> Airtable Scripting Extension, API POST, or CSV import.</p>
+            <p style={{margin:0}}><strong>Automations:</strong> "In Good Standing = No" → manager notification. "2 consecutive Red" → escalation flag.</p>
+          </div>
+        </div>
+
+        <div style={{textAlign:"center",fontSize:11,color:B.dkGrey,padding:"8px 0 16px",letterSpacing:0.5}}>
+          <span style={{color:B.gold,fontWeight:800}}>AXIS SPINE & SPORT</span>
+          <span style={{margin:"0 8px",color:B.ltGrey}}>|</span>
+          Performance Review System v1.0
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
