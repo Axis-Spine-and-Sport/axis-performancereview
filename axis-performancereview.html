@@ -430,7 +430,7 @@ function renderForm(){
   var subL=mk("div"); subL.style.cssText="display:flex;flex-direction:column;gap:4px";
   subL.innerHTML=isLocked
     ?'<div style="font-size:13px;font-weight:700;color:#1a7a3a">&#10003; Review Submitted</div><div style="font-size:11px;color:#767b7f">This review has been completed and locked.</div>'
-    :'<div style="font-size:13px;font-weight:700;color:#000">Ready to Submit?</div><div style="font-size:11px;color:#767b7f">Syncs to Airtable and notifies ownership via email.</div>';
+    :'<div style="font-size:13px;font-weight:700;color:#000">Ready to Submit?</div><div style="font-size:11px;color:#767b7f">Syncs completed review to Airtable.</div>';
   var subR=mk("div"); subR.style.cssText="display:flex;align-items:center;gap:12px;flex-wrap:wrap";
   var msgEl=mk("span"); msgEl.style.cssText="font-size:12px;font-weight:600;display:none";
   var submitBtn=mk("button","btn btn-gold");
