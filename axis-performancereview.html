@@ -81,35 +81,35 @@ tr:last-child td{border-bottom:none}
 </head>
 <body>
 <div class="header">
-  <div class="gold-bar"></div>
-  <div class="header-inner">
-    <div class="logo-wrap">
-      <div class="logo-box">
-        <svg width="26" height="34" viewBox="0 0 26 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5e6b8"/><stop offset="50%" stop-color="#e5be5e"/><stop offset="100%" stop-color="#c9a23e"/></linearGradient>
-            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f0d98a"/><stop offset="50%" stop-color="#e5be5e"/><stop offset="100%" stop-color="#c9a23e"/></linearGradient>
-            <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5e6b8"/><stop offset="100%" stop-color="#e5be5e"/></linearGradient>
-          </defs>
-          <polygon points="0,0 26,0 13,10" fill="url(#g1)"/>
-          <polygon points="0,13 26,13 13,23" fill="url(#g2)"/>
-          <polygon points="0,26 26,26 13,36" fill="url(#g3)"/>
-        </svg>
-      </div>
-      <div>
-        <h1>Axis Spine and Sport</h1>
-        <p class="header-sub">CLINIC QUARTERLY PERFORMANCE REVIEW</p>
-      </div>
-    </div>
-    <div id="headerTitle" style="font-size:13px;color:#e5be5e;font-weight:700"></div>
-  </div>
+<div class="gold-bar"></div>
+<div class="header-inner">
+<div class="logo-wrap">
+<div class="logo-box">
+<svg width="26" height="34" viewBox="0 0 26 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5e6b8"/><stop offset="50%" stop-color="#e5be5e"/><stop offset="100%" stop-color="#c9a23e"/></linearGradient>
+<linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f0d98a"/><stop offset="50%" stop-color="#e5be5e"/><stop offset="100%" stop-color="#c9a23e"/></linearGradient>
+<linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5e6b8"/><stop offset="100%" stop-color="#e5be5e"/></linearGradient>
+</defs>
+<polygon points="0,0 26,0 13,10" fill="url(#g1)"/>
+<polygon points="0,13 26,13 13,23" fill="url(#g2)"/>
+<polygon points="0,26 26,26 13,36" fill="url(#g3)"/>
+</svg>
+</div>
+<div>
+<h1>Axis Spine and Sport</h1>
+<p class="header-sub">CLINIC QUARTERLY PERFORMANCE REVIEW</p>
+</div>
+</div>
+<div id="headerTitle" style="font-size:13px;color:#e5be5e;font-weight:700"></div>
+</div>
 </div>
 
 <div class="body" id="appBody">
-  <div style="text-align:center;padding:60px 20px;color:#767b7f;font-size:13px">
-    <div class="spinner"></div>
-    Loading review...
-  </div>
+<div style="text-align:center;padding:60px 20px;color:#767b7f;font-size:13px">
+<div class="spinner"></div>
+Loading review...
+</div>
 </div>
 
 <script>
@@ -117,26 +117,18 @@ var WORKER_URL = "https://axisperformancereviewworker.drdylan.workers.dev";
 
 var TIERS = ["0-3 months","3-6 months","6-12 months","12-18 months","18-24 months","2+ years"];
 
-// weight: number OR object keyed by tier for tier-specific weights
 var METRICS = [
-  {id:"revenue",        label:"Revenue",          unit:"$", weight:{"0-3 months":0.30,"3-6 months":0.25,"6-12 months":0.25,"12-18 months":0.25,"18-24 months":0.25,"2+ years":0.25},
-    tiers:{"0-3 months":75000,"3-6 months":150000,"6-12 months":240000,"12-18 months":300000,"18-24 months":345000,"2+ years":390000}},
-  {id:"total_visits",   label:"Total Visits",      unit:"",  weight:{"0-3 months":0.25,"3-6 months":0.20,"6-12 months":0.20,"12-18 months":0.20,"18-24 months":0.20,"2+ years":0.20},
-    tiers:{"0-3 months":525,"3-6 months":1050,"6-12 months":1560,"12-18 months":2100,"18-24 months":2550,"2+ years":3150}},
-  {id:"new_patients",   label:"New Patients",      unit:"",  weight:0.15,
-    tiers:{"0-3 months":52,"3-6 months":105,"6-12 months":135,"12-18 months":165,"18-24 months":210,"2+ years":255}},
-  {id:"np_show_rate",   label:"NP Show Rate",      unit:"%", weight:0.05, staticVal:80},
-  {id:"cancel_rate",    label:"Cancellation Rate", unit:"%", weight:0.05, staticVal:10, convertToShow:true},
-  {id:"total_massages", label:"Total Massages",    unit:"",  weight:0.05,
-    tiers:{"0-3 months":90,"3-6 months":180,"6-12 months":240,"12-18 months":280,"18-24 months":320,"2+ years":360}},
-  {id:"google_reviews", label:"Google Reviews",    unit:"",  weight:0.05,
-    tiers:{"0-3 months":18,"3-6 months":36,"6-12 months":45,"12-18 months":54,"18-24 months":63,"2+ years":72}},
-  {id:"reexams",        label:"Re-Exams",          unit:"",  weight:{"0-3 months":0,"3-6 months":0.05,"6-12 months":0.05,"12-18 months":0.05,"18-24 months":0.05,"2+ years":0.05},
-    tiers:{"0-3 months":0,"3-6 months":60,"6-12 months":75,"12-18 months":90,"18-24 months":105,"2+ years":120}},
-  {id:"rof_show_rate",  label:"ROF Show Rate",     unit:"%", weight:0.05, staticVal:80},
-  {id:"transition_exams",label:"Transition Exams", unit:"",  weight:{"0-3 months":0,"3-6 months":0.05,"6-12 months":0.05,"12-18 months":0.05,"18-24 months":0.05,"2+ years":0.05},
-    tiers:{"0-3 months":0,"3-6 months":36,"6-12 months":42,"12-18 months":48,"18-24 months":54,"2+ years":60}},
-  {id:"rof_scheduled",  label:"ROF Scheduled Out", unit:"%", weight:0.05, staticVal:50},
+  {id:"revenue", label:"Revenue", unit:"$", weight:{"0-3 months":0.30,"3-6 months":0.25,"6-12 months":0.25,"12-18 months":0.25,"18-24 months":0.25,"2+ years":0.25}, tiers:{"0-3 months":75000,"3-6 months":150000,"6-12 months":240000,"12-18 months":300000,"18-24 months":345000,"2+ years":390000}},
+  {id:"total_visits", label:"Total Visits", unit:"", weight:{"0-3 months":0.25,"3-6 months":0.20,"6-12 months":0.20,"12-18 months":0.20,"18-24 months":0.20,"2+ years":0.20}, tiers:{"0-3 months":525,"3-6 months":1050,"6-12 months":1560,"12-18 months":2100,"18-24 months":2550,"2+ years":3150}},
+  {id:"new_patients", label:"New Patients", unit:"", weight:0.15, tiers:{"0-3 months":52,"3-6 months":105,"6-12 months":135,"12-18 months":165,"18-24 months":210,"2+ years":255}},
+  {id:"np_show_rate", label:"NP Show Rate", unit:"%", weight:0.05, staticVal:80},
+  {id:"cancel_rate", label:"Cancellation Rate", unit:"%", weight:0.05, staticVal:10, convertToShow:true},
+  {id:"total_massages", label:"Total Massages", unit:"", weight:0.05, tiers:{"0-3 months":90,"3-6 months":180,"6-12 months":240,"12-18 months":280,"18-24 months":320,"2+ years":360}},
+  {id:"google_reviews", label:"Google Reviews", unit:"", weight:0.05, tiers:{"0-3 months":18,"3-6 months":36,"6-12 months":45,"12-18 months":54,"18-24 months":63,"2+ years":72}},
+  {id:"reexams", label:"Re-Exams", unit:"", weight:{"0-3 months":0,"3-6 months":0.05,"6-12 months":0.05,"12-18 months":0.05,"18-24 months":0.05,"2+ years":0.05}, tiers:{"0-3 months":0,"3-6 months":60,"6-12 months":75,"12-18 months":90,"18-24 months":105,"2+ years":120}},
+  {id:"rof_show_rate", label:"ROF Show Rate", unit:"%", weight:0.05, staticVal:80},
+  {id:"transition_exams",label:"Transition Exams", unit:"", weight:{"0-3 months":0,"3-6 months":0.05,"6-12 months":0.05,"12-18 months":0.05,"18-24 months":0.05,"2+ years":0.05}, tiers:{"0-3 months":0,"3-6 months":36,"6-12 months":42,"12-18 months":48,"18-24 months":54,"2+ years":60}},
+  {id:"rof_scheduled", label:"ROF Scheduled Out", unit:"%", weight:0.05, staticVal:50},
 ];
 
 var RATINGS = ["Needs Improvement","Meets Expectations","Exceeds","Elite"];
@@ -160,11 +152,17 @@ function getAZDate(){
 }
 
 var formData={
-  reviewer:"", submission_date:getAZDate(),
-  metrics:{}, overall_rating:"",
-  wins:"", misses:"", root_cause:"", focus_next_qtr:"", owner_notes:""
+  reviewer:"",
+  submission_date:getAZDate(),
+  metrics:{},
+  overall_rating:"",
+  wins:"",
+  misses:"",
+  root_cause:"",
+  focus_next_qtr:"",
+  owner_notes:""
 };
-METRICS.forEach(function(m){formData.metrics[m.id]={actual:""};});
+METRICS.forEach(function(m){formData.metrics[m.id]={actual:"";};});
 
 function getParam(n){return new URLSearchParams(window.location.search).get(n);}
 
@@ -172,8 +170,8 @@ function calcClinicAge(d){
   if(!d) return null;
   var open=new Date(d+"T00:00:00"),now=new Date();
   var mo=(now.getFullYear()-open.getFullYear())*12+(now.getMonth()-open.getMonth());
-  if(mo<3)  return "0-3 months";
-  if(mo<6)  return "3-6 months";
+  if(mo<3) return "0-3 months";
+  if(mo<6) return "3-6 months";
   if(mo<12) return "6-12 months";
   if(mo<18) return "12-18 months";
   if(mo<24) return "18-24 months";
@@ -216,7 +214,7 @@ function calcStatus(m,actual,age){
   if(pct===null) return null;
   if(pct>=110) return "Elite";
   if(pct>=100) return "Exceeds";
-  if(pct>=90)  return "Meets Expectations";
+  if(pct>=90) return "Meets Expectations";
   return "Needs Improvement";
 }
 
@@ -224,7 +222,7 @@ function pctClass(pct){
   if(pct===null) return "pct-none";
   if(pct>=110) return "pct-el";
   if(pct>=100) return "pct-ex";
-  if(pct>=90)  return "pct-me";
+  if(pct>=90) return "pct-me";
   return "pct-ni";
 }
 
@@ -239,16 +237,17 @@ function calcWeightedScore(){
     if(!w) return;
     var st=calcStatus(m,formData.metrics[m.id].actual,clinicAge);
     if(!st) return;
-    ws+=STATUS_SCORE[st]*w; tw+=w;
+    ws+=STATUS_SCORE[st]*w;
+    tw+=w;
   });
   return tw?ws/tw:null;
 }
 
 function scoreToRating(s){
   if(s===null) return null;
-  if(s>=3.5)  return "Elite";
+  if(s>=3.5) return "Elite";
   if(s>=2.75) return "Exceeds";
-  if(s>=2.0)  return "Meets Expectations";
+  if(s>=2.0) return "Meets Expectations";
   return "Needs Improvement";
 }
 
@@ -288,15 +287,18 @@ function updateAutoRating(){
 }
 
 function showError(msg){
-  var body=document.getElementById("appBody"); body.innerHTML='';
-  var card=mkCard(); card.style.cssText="text-align:center;padding:60px 40px";
+  var body=document.getElementById("appBody");
+  body.innerHTML='';
+  var card=mkCard();
+  card.style.cssText="text-align:center;padding:60px 40px";
   card.innerHTML='<div style="font-size:32px;margin-bottom:16px">&#9888;</div><div style="font-size:15px;font-weight:700;color:#000;margin-bottom:8px">Unable to Load Review</div><div style="font-size:13px;color:#767b7f;max-width:400px;margin:0 auto">'+msg+'</div>';
   body.appendChild(card);
   document.getElementById("headerTitle").textContent="";
 }
 
 function renderForm(){
-  var body=document.getElementById("appBody"); body.innerHTML="";
+  var body=document.getElementById("appBody");
+  body.innerHTML="";
   var clinic=reviewData["Clinic (from Clinic)"]||reviewData["Clinic"]||"—";
   var quarter=reviewData["Quarter"]||"—";
   var year=reviewData["Year"]||"—";
@@ -306,44 +308,60 @@ function renderForm(){
   if(isLocked){var ban=mk("div","locked-banner");ban.innerHTML='<span style="font-size:16px">&#128274;</span> This review has been submitted and is locked.';body.appendChild(ban);}
 
   // S1
-  var s1=mkCard(); s1.appendChild(mkTitle("1","#000","Clinic Overview"));
+  var s1=mkCard();
+  s1.appendChild(mkTitle("1","#000","Clinic Overview"));
   var g1=mk("div","info-grid");
   [{l:"Clinic",v:clinic},{l:"Opening Date",v:openFmt},{l:"Clinic Age",v:clinicAge||"Unknown"},{l:"Quarter",v:quarter},{l:"Year",v:year},{l:"Review Period",v:quarter+" "+year}].forEach(function(i){
-    var w=mk("div"); w.appendChild(mkLbl(i.l)); w.appendChild(mkLocked(i.v)); g1.appendChild(w);
+    var w=mk("div");
+    w.appendChild(mkLbl(i.l));
+    w.appendChild(mkLocked(i.v));
+    g1.appendChild(w);
   });
-  var rW=mk("div"); rW.appendChild(mkLbl("Reviewer"));
-  var rSel=mk("select","field"); rSel.disabled=isLocked;
-  var defOp=document.createElement("option"); defOp.value=""; defOp.textContent="Select reviewer…"; rSel.appendChild(defOp);
+  var rW=mk("div");
+  rW.appendChild(mkLbl("Reviewer"));
+  var rSel=mk("select","field");
+  rSel.disabled=isLocked;
+  var defOp=document.createElement("option");
+  defOp.value="";defOp.textContent="Select reviewer…";rSel.appendChild(defOp);
   reviewers.forEach(function(r){
     var op=document.createElement("option");
-    op.value=r.id;
-    op.textContent=r.name;
+    op.value=r.id;op.textContent=r.name;
     if(formData.reviewer===op.value) op.selected=true;
     rSel.appendChild(op);
   });
   rSel.addEventListener("change",function(e){formData.reviewer=e.target.value;});
-  rW.appendChild(rSel); g1.appendChild(rW);
-  var dW=mk("div"); dW.appendChild(mkLbl("Submission Date"));
-  var dInp=mk("input","field"); dInp.type="date"; dInp.value=formData.submission_date; dInp.disabled=isLocked;
+  rW.appendChild(rSel);
+  g1.appendChild(rW);
+  var dW=mk("div");
+  dW.appendChild(mkLbl("Submission Date"));
+  var dInp=mk("input","field");
+  dInp.type="date";dInp.value=formData.submission_date;dInp.disabled=isLocked;
   dInp.addEventListener("change",function(e){formData.submission_date=e.target.value;});
-  dW.appendChild(dInp); g1.appendChild(dW);
-  s1.appendChild(g1); body.appendChild(s1);
+  dW.appendChild(dInp);
+  g1.appendChild(dW);
+  s1.appendChild(g1);
+  body.appendChild(s1);
 
   // S2 KPIs
   var s2=mkCard();
-  var s2hdr=mk("div","flex-sb"); s2hdr.style.marginBottom="0";
-  var s2t=mkTitle("2","#e5be5e","Clinic KPIs — Quarterly Actuals"); s2t.style.marginBottom="0";
+  var s2hdr=mk("div","flex-sb");
+  s2hdr.style.marginBottom="0";
+  var s2t=mkTitle("2","#e5be5e","Clinic KPIs — Quarterly Actuals");
+  s2t.style.marginBottom="0";
   s2hdr.appendChild(s2t);
   var score=calcWeightedScore(),autoR=scoreToRating(score);
   if(autoR){
     var pill=mk("span","kpi-pill");
     var pc={"Elite":"background:#1a1a1a;color:#e5be5e","Exceeds":"background:#f5e6b8;color:#c9a23e","Meets Expectations":"background:#eef0f2;color:#000","Needs Improvement":"background:#fde8e8;color:#b91c1c"};
-    pill.style.cssText=pc[autoR]||""; pill.textContent=autoR; s2hdr.appendChild(pill);
+    pill.style.cssText=pc[autoR]||"";
+    pill.textContent=autoR;
+    s2hdr.appendChild(pill);
   }
   s2.appendChild(s2hdr);
   var note=mk("div","alert-gold");
   note.innerHTML='<strong>Status auto-calculates</strong> as you enter actuals. &nbsp;&#8805;110% = Elite &nbsp;|&nbsp; 100&#8211;110% = Exceeds &nbsp;|&nbsp; 90&#8211;99% = Meets Expectations &nbsp;|&nbsp; &lt;90% = Needs Improvement';
   s2.appendChild(note);
+
   var tw=mk("div","tbl-wrap");
   var tbl=document.createElement("table");
   tbl.innerHTML='<thead><tr><th>Metric</th><th style="width:80px;text-align:center">Weight</th><th style="width:140px">Target</th><th style="width:150px">Actual</th><th style="width:90px;text-align:center">% Achieved</th><th style="width:140px;text-align:center">Status</th></tr></thead>';
@@ -351,8 +369,8 @@ function renderForm(){
   METRICS.forEach(function(m){
     var w=getWeight(m,clinicAge);
     var tr=document.createElement("tr");
-    var td1=mk("td"); td1.style.cssText="font-weight:600;color:#000"; td1.textContent=m.label+(m.convertToShow?" ↓":"");
-    var tdW=mk("td"); tdW.style.textAlign="center";
+    var td1=mk("td");td1.style.cssText="font-weight:600;color:#000";td1.textContent=m.label+(m.convertToShow?" ↓":"");
+    var tdW=mk("td");tdW.style.textAlign="center";
     tdW.innerHTML=w?'<span style="font-size:12px;font-weight:700;color:#c9a23e">'+(w*100).toFixed(0)+'%</span>':'<span style="font-size:11px;color:#c3cace;font-style:italic">—</span>';
     var td2=mk("td");
     var t=resolveTarget(m,clinicAge);
@@ -361,21 +379,27 @@ function renderForm(){
     var td3=mk("td");
     var inp=mk("input","field");
     inp.style.cssText="background:#fff;border:1px solid #c3cace;font-weight:400;color:#000;";
-    inp.type="text"; inp.placeholder=m.unit==="$"?"$0":m.unit==="%"?"0%":"0";
-    inp.value=formData.metrics[m.id].actual||""; inp.disabled=isLocked||w===0;
+    inp.type="text";
+    inp.placeholder=m.unit==="$"?"$0":m.unit==="%"?"0%":"0";
+    inp.value=formData.metrics[m.id].actual||"";
+    inp.disabled=isLocked||w===0;
     if(w===0) inp.style.opacity="0.4";
     (function(metric){inp.addEventListener("input",function(e){formData.metrics[metric.id].actual=e.target.value;updateMetricRow(metric);updateAutoRating();});})(m);
     td3.appendChild(inp);
-    var td4=mk("td"); td4.style.textAlign="center"; td4.id="pct-"+m.id;
-    var td5=mk("td"); td5.style.textAlign="center"; td5.id="st-"+m.id;
-    tr.append(td1,tdW,td2,td3,td4,td5); tbody.appendChild(tr);
+    var td4=mk("td");td4.style.textAlign="center";td4.id="pct-"+m.id;
+    var td5=mk("td");td5.style.textAlign="center";td5.id="st-"+m.id;
+    tr.append(td1,tdW,td2,td3,td4,td5);
+    tbody.appendChild(tr);
   });
-  tbl.appendChild(tbody); tw.appendChild(tbl); s2.appendChild(tw);
+  tbl.appendChild(tbody);
+  tw.appendChild(tbl);
+  s2.appendChild(tw);
   body.appendChild(s2);
   METRICS.forEach(function(m){updateMetricRow(m);});
 
   // S3 Narrative
-  var s3=mkCard(); s3.appendChild(mkTitle("3","#000","Quarterly Commentary"));
+  var s3=mkCard();
+  s3.appendChild(mkTitle("3","#000","Quarterly Commentary"));
   var ng=mk("div","narr-grid");
   [{key:"wins",l:"Top Wins This Quarter",ph:"What went well? Key achievements…",r:4},
    {key:"misses",l:"Key Misses / Underperformance",ph:"Which metrics fell short?",r:4},
@@ -383,16 +407,22 @@ function renderForm(){
    {key:"focus_next_qtr",l:"Focus Areas — Next Quarter",ph:"Top 2–3 priorities…",r:4},
    {key:"owner_notes",l:"Notes for Ownership",ph:"Anything ownership should know…",r:3}
   ].forEach(function(i){
-    var w=mk("div"); w.appendChild(mkLbl(i.l));
-    var ta=mk("textarea","field"); ta.placeholder=i.ph; ta.rows=i.r; ta.value=formData[i.key]||""; ta.disabled=isLocked;
+    var w=mk("div");
+    w.appendChild(mkLbl(i.l));
+    var ta=mk("textarea","field");
+    ta.placeholder=i.ph;ta.rows=i.r;ta.value=formData[i.key]||"";ta.disabled=isLocked;
     (function(k){ta.addEventListener("input",function(e){formData[k]=e.target.value;});})(i.key);
-    w.appendChild(ta); ng.appendChild(w);
+    w.appendChild(ta);
+    ng.appendChild(w);
   });
-  s3.appendChild(ng); body.appendChild(s3);
+  s3.appendChild(ng);
+  body.appendChild(s3);
 
   // S4 Rating
-  var s4=mkCard(); s4.appendChild(mkTitle("4","#000","Overall Clinic Rating"));
-  var autoBox=mk("div","alert-gold"); autoBox.id="autoRatingBox";
+  var s4=mkCard();
+  s4.appendChild(mkTitle("4","#000","Overall Clinic Rating"));
+  var autoBox=mk("div","alert-gold");
+  autoBox.id="autoRatingBox";
   var sc2=calcWeightedScore(),ar2=scoreToRating(sc2);
   autoBox.innerHTML=ar2
     ?'<strong>Auto-calculated:</strong> Weighted score <strong>'+sc2.toFixed(2)+'</strong> &rarr; <strong>'+ar2+'</strong>'
@@ -401,7 +431,8 @@ function renderForm(){
   var rg=mk("div","rating-grid");
   RATINGS.forEach(function(rv){
     var meta=RATING_META[rv];
-    var b=mk("button","rating-btn"); b.dataset.rating=rv;
+    var b=mk("button","rating-btn");
+    b.dataset.rating=rv;
     if(ar2===rv) b.classList.add(meta.cls);
     b.innerHTML='<span style="margin-right:6px">'+meta.icon+'</span>'+rv+(ar2===rv?'<br><span style="font-size:9px;opacity:.6">AUTO</span>':'');
     rg.appendChild(b);
@@ -422,38 +453,43 @@ function renderForm(){
 
   // Submit
   var sub=mk("div","submit-bar");
-  var subL=mk("div"); subL.style.cssText="display:flex;flex-direction:column;gap:4px";
+  var subL=mk("div");
+  subL.style.cssText="display:flex;flex-direction:column;gap:4px";
   subL.innerHTML=isLocked
     ?'<div style="font-size:13px;font-weight:700;color:#1a7a3a">&#10003; Review Submitted</div><div style="font-size:11px;color:#767b7f">This review has been completed and locked.</div>'
     :'<div style="font-size:13px;font-weight:700;color:#000">Ready to Submit?</div><div style="font-size:11px;color:#767b7f">Syncs completed review to Airtable.</div>';
-  var subR=mk("div"); subR.style.cssText="display:flex;align-items:center;gap:12px;flex-wrap:wrap";
-  var msgEl=mk("span"); msgEl.style.cssText="font-size:12px;font-weight:600;display:none";
+  var subR=mk("div");
+  subR.style.cssText="display:flex;align-items:center;gap:12px;flex-wrap:wrap";
+  var msgEl=mk("span");
+  msgEl.style.cssText="font-size:12px;font-weight:600;display:none";
   var submitBtn=mk("button","btn btn-gold");
-  submitBtn.textContent=isLocked?"Submitted":"Submit Review"; submitBtn.disabled=isLocked;
+  submitBtn.textContent=isLocked?"Submitted":"Submit Review";
+  submitBtn.disabled=isLocked;
   submitBtn.onclick=function(){handleSubmit(submitBtn,msgEl);};
-  subR.appendChild(msgEl); subR.appendChild(submitBtn);
-  sub.appendChild(subL); sub.appendChild(subR); body.appendChild(sub);
+  subR.appendChild(msgEl);
+  subR.appendChild(submitBtn);
+  sub.appendChild(subL);
+  sub.appendChild(subR);
+  body.appendChild(sub);
 
   // Reference Table
   renderReferenceTable(body);
 
   var ft=mk("div","footer");
-  ft.innerHTML='<span style="color:#e5be5e;font-weight:800">AXIS SPINE AND SPORT</span><span style="margin:0 8px;color:#c3cace">|</span>Clinic Quarterly Review v3.0';
+  ft.innerHTML='<span style="color:#e5be5e;font-weight:800">AXIS SPINE AND SPORT</span><span style="margin:0 8px;color:#c3cace">|</span>Clinic Quarterly Review v3.1';
   body.appendChild(ft);
 }
 
 function renderReferenceTable(body){
   var card=mkCard();
   card.appendChild(mkTitle("5","#000","KPI Reference Table — All Clinic Ages"));
-  var sub=mk("p"); sub.style.cssText="font-size:11px;color:#767b7f;margin:-8px 0 14px";
+  var sub=mk("p");
+  sub.style.cssText="font-size:11px;color:#767b7f;margin:-8px 0 14px";
   sub.textContent="Targets and weights by clinic age tier. Weights in parentheses apply to 0–3 month clinics only.";
   card.appendChild(sub);
-
   var tw=mk("div","tbl-wrap");
   var tbl=document.createElement("table");
   tbl.className="ref-table";
-
-  // Header
   var thead=document.createElement("thead");
   var hr=document.createElement("tr");
   ["Metric","0–3 mo","3–6 mo","6–12 mo","12–18 mo","18–24 mo","2+ yrs"].forEach(function(h,i){
@@ -464,12 +500,9 @@ function renderReferenceTable(body){
   });
   thead.appendChild(hr);
   tbl.appendChild(thead);
-
   var tbody=document.createElement("tbody");
   METRICS.forEach(function(m){
     var tr=document.createElement("tr");
-
-    // Metric name + weight
     var td0=document.createElement("td");
     var normalW=typeof m.weight==="object"?m.weight["2+ years"]:m.weight;
     var earlyW=typeof m.weight==="object"?m.weight["0-3 months"]:m.weight;
@@ -477,7 +510,6 @@ function renderReferenceTable(body){
     var earlyStr=earlyW!==normalW?"("+(earlyW*100).toFixed(0)+"%)":"";
     td0.innerHTML='<strong>'+m.label+(m.convertToShow?" ↓":"")+'</strong><br><span class="wt">'+wtStr+(earlyStr?' <span class="wt-zero">'+earlyStr+'</span>':'')+'</span>';
     tr.appendChild(td0);
-
     TIERS.forEach(function(tier){
       var td=document.createElement("td");
       var t=resolveTarget(m,tier);
@@ -492,8 +524,6 @@ function renderReferenceTable(body){
     });
     tbody.appendChild(tr);
   });
-
-  // Weighting row
   var wtr=document.createElement("tr");
   wtr.style.cssText="background:#eef0f2;border-top:2px solid #c3cace";
   var wtd0=document.createElement("td");
@@ -513,72 +543,180 @@ function renderReferenceTable(body){
   body.appendChild(card);
 }
 
-function handleSubmit(btn,msgEl){
-  if(!formData.reviewer){showMsg(msgEl,"Please select a reviewer.","#b91c1c");return;}
-  var score=calcWeightedScore(),ar=scoreToRating(score);
-  if(!ar){showMsg(msgEl,"Please enter metric actuals to generate a rating.","#b91c1c");return;}
-  btn.disabled=true; btn.textContent="Submitting…";
-  var payload={
-    "Reviewer":formData.reviewer?[{id:formData.reviewer}]:null,
-    "Submission Date":formData.submission_date,
-    "Submitted At":new Date().toISOString(),
-    "Status":"Completed",
-    "Overall Rating":ar,
-    "Weighted Score":score?parseFloat(score.toFixed(2)):null,
-    "Wins This Quarter":formData.wins,
-    "Key Misses":formData.misses,
-    "Root Cause":formData.root_cause,
-    "Focus — Next Quarter":formData.focus_next_qtr,
-    "Notes for Ownership":formData.owner_notes
+// ── Submit helpers ──────────────────────────────────────────────────
+
+function parseNum(v) {
+  if (v === null || v === undefined || v === "" || v === "—" || v === "Not weighted") return null;
+  var n = parseFloat(String(v).replace(/[$,%\s]/g, ""));
+  return isNaN(n) ? null : n;
+}
+
+function parsePct(v) {
+  var n = parseNum(v);
+  if (n === null) return null;
+  return n > 1 ? n / 100 : n;
+}
+
+function mapRatingToAirtable(rating) {
+  var map = {
+    "Needs Improvement": "Needs Improvement",
+    "Meets Expectations": "Meets Expectation",
+    "Exceeds": "Exceeds Expectation",
+    "Elite": "Elite"
   };
-  METRICS.forEach(function(m){
-    var actual=formData.metrics[m.id].actual;
-    payload[m.label+" — Actual"]=actual;
-    payload[m.label+" — Target"]=formatTarget(m,clinicAge);
-    payload[m.label+" — Status"]=calcStatus(m,actual,clinicAge)||"";
-    payload[m.label+" — % Achieved"]=calcPct(m,actual,clinicAge)||"";
+  return map[rating] || rating;
+}
+
+function mapStatusToAirtable(status) {
+  var map = {
+    "Needs Improvement": "Red",
+    "Meets Expectations": "Yellow",
+    "Exceeds": "Green",
+    "Elite": "Green"
+  };
+  return map[status] || null;
+}
+
+// ── Submit handler ──────────────────────────────────────────────────
+
+function handleSubmit(btn, msgEl) {
+  if (!formData.reviewer) { showMsg(msgEl, "Please select a reviewer.", "#b91c1c"); return; }
+  var score = calcWeightedScore(), ar = scoreToRating(score);
+  if (!ar) { showMsg(msgEl, "Please enter metric actuals to generate a rating.", "#b91c1c"); return; }
+
+  btn.disabled = true;
+  btn.textContent = "Submitting…";
+
+  var payload = {
+    // Core fields
+    "flduQ5Ado5cyn1v4C": formData.reviewer ? [formData.reviewer] : [],
+    "fldgmvU5XdKFvPdc4": formData.submission_date || null,
+    "fldnLWlygwE6Bt6mg": "Completed",
+    "fld79bpmJPJZ05l8M": mapRatingToAirtable(ar),
+    "fldXR16S7aKEpF3hs": score ? parseFloat(score.toFixed(2)) : null,
+
+    // Narrative fields
+    "fldrp8EijQbjizNfw": formData.wins || null,
+    "fldCAliqq3vFCZM2b": formData.misses || null,
+    "fldfzkZB5L0xDfWQ9": formData.root_cause || null,
+    "fld8hkWPIYV2YrAwR": formData.focus_next_qtr || null,
+    "fldDqvd9sMxTe7pm7": formData.owner_notes || null,
+
+    // Revenue
+    "fldE1HNn4jTqvhQ5D": parseNum(formData.metrics.revenue.actual),
+    "fldH8iQxhe7xNoh88": parseNum(formatTarget(METRICS[0], clinicAge)),
+    "fldaWB5pSmJX2YT3W": mapStatusToAirtable(calcStatus(METRICS[0], formData.metrics.revenue.actual, clinicAge)),
+
+    // Total Visits
+    "fldmKmja3n7VJ2gSp": parseNum(formData.metrics.total_visits.actual),
+    "fld1eyZPXDvh8kAWv": parseNum(formatTarget(METRICS[1], clinicAge)),
+    "fldjveT4paRLMbOSk": mapStatusToAirtable(calcStatus(METRICS[1], formData.metrics.total_visits.actual, clinicAge)),
+
+    // New Patients
+    "fldaNoKttFBAdzkrP": parseNum(formData.metrics.new_patients.actual),
+    "fldxYZ462eDc0p8ny": parseNum(formatTarget(METRICS[2], clinicAge)),
+    "fldF4B0heuazW49Av": mapStatusToAirtable(calcStatus(METRICS[2], formData.metrics.new_patients.actual, clinicAge)),
+
+    // NP Show Rate
+    "fldHrfLt04FhS9iqm": parsePct(formData.metrics.np_show_rate.actual),
+    "fldSiAoxwV11RaEmj": 0.80,
+    "fldU8eF4jivjJLkvb": mapStatusToAirtable(calcStatus(METRICS[3], formData.metrics.np_show_rate.actual, clinicAge)),
+
+    // Cancellation Rate
+    "fldbRpQigJL3vq9cl": parsePct(formData.metrics.cancel_rate.actual),
+    "fldGbUjmW7YKuXv9q": 0.10,
+    "fldrsZmGRSTvSYT1v": mapStatusToAirtable(calcStatus(METRICS[4], formData.metrics.cancel_rate.actual, clinicAge)),
+
+    // Total Massages
+    "fldtQyOuBSr9sAL9m": parseNum(formData.metrics.total_massages.actual),
+    "fldbBSX5m5MHJKvuT": parseNum(formatTarget(METRICS[5], clinicAge)),
+    "fld7GRehFOyVRNrQ1": mapStatusToAirtable(calcStatus(METRICS[5], formData.metrics.total_massages.actual, clinicAge)),
+
+    // Google Reviews
+    "fld5J8e3yhzJM8iVJ": parseNum(formData.metrics.google_reviews.actual),
+    "fldPjZOHh7os6Kv5y": parseNum(formatTarget(METRICS[6], clinicAge)),
+    "fldCt9Jpztwz93haC": mapStatusToAirtable(calcStatus(METRICS[6], formData.metrics.google_reviews.actual, clinicAge)),
+
+    // Re-Exams
+    "fld72RmRq8BBYvIhA": parseNum(formData.metrics.reexams.actual),
+    "fld2oMP6X8yNcch8Z": parseNum(formatTarget(METRICS[7], clinicAge)),
+    "fldwuIP5JiEfum6zJ": mapStatusToAirtable(calcStatus(METRICS[7], formData.metrics.reexams.actual, clinicAge)),
+
+    // ROF Show Rate
+    "fldEW3jCd04TBfizV": parsePct(formData.metrics.rof_show_rate.actual),
+    "fldqczB1cNGSPnHzJ": 0.80,
+    "fldqd6rjf9ur1QbM3": mapStatusToAirtable(calcStatus(METRICS[8], formData.metrics.rof_show_rate.actual, clinicAge)),
+
+    // Transition Exams
+    "fld74MT8HTomBXbPf": parseNum(formData.metrics.transition_exams.actual),
+    "fld4wwaK5U8aM0i9p": parseNum(formatTarget(METRICS[9], clinicAge)),
+    "fldYp1GDbma36ORvZ": mapStatusToAirtable(calcStatus(METRICS[9], formData.metrics.transition_exams.actual, clinicAge)),
+
+    // ROF Scheduled Out
+    "fldK4iyjhKuJtHP2P": parsePct(formData.metrics.rof_scheduled.actual),
+    "fldbQfxG380eIksBr": 0.50,
+    "fldQEA7B8n0JIoNv0": mapStatusToAirtable(calcStatus(METRICS[10], formData.metrics.rof_scheduled.actual, clinicAge)),
+  };
+
+  // Strip nulls so we don't overwrite fields the user didn't touch
+  Object.keys(payload).forEach(function(k) {
+    if (payload[k] === null || payload[k] === undefined) delete payload[k];
   });
-  fetch(WORKER_URL+"/api/quarterly-review",{
-    method:"PATCH",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({recordId:recordId,fields:payload})
-  }).then(function(r){return r.json();}).then(function(result){
-    if(result.id){
-      showMsg(msgEl,"Submitted — Airtable updated.","#1a7a3a");
-      btn.textContent="Submitted";
-      btn.style.cssText="background:#e6f4ea;color:#1a7a3a;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:700";
-      isLocked=true;
-    } else {throw new Error();}
-  }).catch(function(){
-    showMsg(msgEl,"Sync failed — check Worker logs.","#b91c1c");
-    btn.disabled=false; btn.textContent="Submit Review";
+
+  fetch(WORKER_URL + "/api/quarterly-review", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ recordId: recordId, fields: payload })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(result) {
+    if (result.id) {
+      showMsg(msgEl, "Submitted — Airtable updated.", "#1a7a3a");
+      btn.textContent = "Submitted";
+      btn.style.cssText = "background:#e6f4ea;color:#1a7a3a;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:700";
+      isLocked = true;
+    } else {
+      console.error("Airtable error:", JSON.stringify(result));
+      throw new Error(result.error ? result.error.message : "Unknown error");
+    }
+  })
+  .catch(function(err) {
+    console.error("Submit failed:", err);
+    showMsg(msgEl, "Sync failed — check console for details.", "#b91c1c");
+    btn.disabled = false;
+    btn.textContent = "Submit Review";
   });
 }
 
 function showMsg(el,text,color){el.style.display="inline";el.style.color=color;el.textContent=text;}
 
+// ── Init ────────────────────────────────────────────────────────────
+
 (function(){
   recordId=getParam("recordId");
   if(!recordId){showError("No review record specified. Please open this form from the Airtable scorecard button.");return;}
+
   fetch(WORKER_URL+"/api/quarterly-review?recordId="+recordId)
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(!data.fields){showError("Record not found. Please open this form from the Airtable button.");return;}
+    reviewData=data.fields;
+    clinicAge=calcClinicAge(data.fields["Opening Date (from Clinic)"]||data.fields["Opening Date"]);
+    isLocked=data.fields["Status"]==="Completed";
+    document.getElementById("headerTitle").textContent=
+      (data.fields["Clinic (from Clinic)"]||data.fields["Clinic"]||"")+" — "+data.fields["Quarter"]+" "+data.fields["Year"];
+
+    fetch(WORKER_URL+"/api/reviewers")
     .then(function(r){return r.json();})
-    .then(function(data){
-      if(!data.fields){showError("Record not found. Please open this form from the Airtable button.");return;}
-      reviewData=data.fields;
-      clinicAge=calcClinicAge(data.fields["Opening Date (from Clinic)"]||data.fields["Opening Date"]);
-      isLocked=data.fields["Status"]==="Completed";
-      document.getElementById("headerTitle").textContent=
-        (data.fields["Clinic (from Clinic)"]||data.fields["Clinic"]||"")+" — "+data.fields["Quarter"]+" "+data.fields["Year"];
-      fetch(WORKER_URL+"/api/reviewers")
-        .then(function(r){return r.json();})
-        .then(function(rData){
-          if(rData.records&&rData.records.length){
-            reviewers=rData.records.map(function(r){
-              return {id:r.id, name:r.fields["Employee Full Name"]||"", title:r.fields["Job Title"]||""};
-            });
-          }
-        }).catch(function(){})
-        .then(function(){renderForm();});
-    }).catch(function(){showError("Unable to load review. Please check your connection and try again.");});
+    .then(function(rData){
+      if(rData.records&&rData.records.length){
+        reviewers=rData.records.map(function(r){
+          return {id:r.id, name:r.fields["Employee Full Name"]||"", title:r.fields["Job Title"]||""};
+        });
+      }
+    }).catch(function(){})
+    .then(function(){renderForm();});
+  }).catch(function(){showError("Unable to load review. Please check your connection and try again.");});
 })();
 </script>
 </body>
