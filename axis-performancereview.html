@@ -67,6 +67,8 @@ tr:last-child td{border-bottom:none}
 .flex-sb{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .footer{text-align:center;font-size:11px;color:#767b7f;padding:8px 0 16px;letter-spacing:.5px}
 .breakdown-box{margin-top:14px;padding:14px;background:#eef0f2;border-radius:8px;border-left:4px solid #e5be5e}
+.spinner{width:32px;height:32px;border:3px solid #eef0f2;border-top:3px solid #e5be5e;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -97,11 +99,10 @@ tr:last-child td{border-bottom:none}
 
 <div class="body" id="appBody">
   <div style="text-align:center;padding:60px 20px;color:#767b7f;font-size:13px">
-    <div style="width:32px;height:32px;border:3px solid #eef0f2;border-top:3px solid #e5be5e;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+    <div class="spinner"></div>
     Loading review...
   </div>
 </div>
-<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <script>
 var WORKER_URL = "https://axisperformancereviewworker.drdylan.workers.dev";
@@ -280,7 +281,6 @@ function showError(msg){
 function renderForm(){
   var body=document.getElementById("appBody");
   body.innerHTML="";
-
   var clinic=reviewData["Clinic (from Clinic)"]||reviewData["Clinic"]||"—";
   var quarter=reviewData["Quarter"]||"—";
   var year=reviewData["Year"]||"—";
@@ -495,8 +495,6 @@ function showMsg(el,text,color){el.style.display="inline";el.style.color=color;e
     showError("No review record specified. Please open this form from the Airtable scorecard button.");
     return;
   }
-
-  // Load review record first, then try to load reviewers
   fetch(WORKER_URL+"/api/quarterly-review?recordId="+recordId)
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -509,14 +507,13 @@ function showMsg(el,text,color){el.style.display="inline";el.style.color=color;e
       isLocked   = data.fields["Status"]==="Completed";
       document.getElementById("headerTitle").textContent =
         (data.fields["Clinic (from Clinic)"]||data.fields["Clinic"]||"")+" — "+data.fields["Quarter"]+" "+data.fields["Year"];
-
-      // Try to load reviewers from Airtable — render either way
+      // Load reviewers then render — fall back to defaults if it fails
       fetch(WORKER_URL+"/api/reviewers")
         .then(function(r){ return r.json(); })
         .then(function(rData){
-          if(rData.records && rData.records.length){
-            reviewers = rData.records.map(function(r){
-              return {name:r.fields["Employee Full Name"]||"", title:r.fields["Job Title"]||""};
+          if(rData.records&&rData.records.length){
+            reviewers=rData.records.map(function(r){
+              return {name:r.fields["Employee Full Name"]||"",title:r.fields["Job Title"]||""};
             });
           }
         })
