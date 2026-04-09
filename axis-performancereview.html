@@ -111,7 +111,7 @@ var METRICS = [
   {id:"total_visits",     label:"Total Visits",     unit:"",  inverted:false, weight:0.20, tiers:{"0-3 months":1050,"3-6 months":1575,"6-9 months":2100,"9-12 months":2625,"12+ months":3150}},
   {id:"new_patients",     label:"New Patients",     unit:"",  inverted:false, weight:0.15, tiers:{"0-3 months":120,"3-6 months":180,"6-9 months":240,"9-12 months":300,"12+ months":360}},
   {id:"np_show_rate",     label:"NP Show Rate",     unit:"%", inverted:false, weight:0.10, staticVal:80},
-  {id:"cancel_rate",      label:"Cancellation Rate",unit:"%", inverted:true,  weight:0.10, staticVal:10},
+  {id:"cancel_rate",      label:"Cancellation Rate",unit:"%", inverted:false, weight:0.10, staticVal:10, convertToShow:true},
   {id:"total_massages",   label:"Total Massages",   unit:"",  inverted:false, weight:0.05, tiers:{"0-3 months":90,"3-6 months":150,"6-9 months":225,"9-12 months":300,"12+ months":390}},
   {id:"google_reviews",   label:"Google Reviews",   unit:"",  inverted:false, weight:0.05, tiers:{"0-3 months":30,"3-6 months":60,"6-9 months":90,"9-12 months":120,"12+ months":150}},
   {id:"reexams",          label:"Re-Exams",         unit:"",  inverted:false, weight:0.05, tiers:{"0-3 months":45,"3-6 months":75,"6-9 months":120,"9-12 months":165,"12+ months":210}},
@@ -127,14 +127,16 @@ var RATING_META = {
   "Exceeds":{icon:"&#9733;",cls:"sel-ex"},
   "Elite":{icon:"&#127942;",cls:"sel-el"}
 };
-var STATUS_SCORE = {Elite:4,Green:3,Yellow:2,Red:1};
+var STATUS_SCORE = {"Elite":4,"Exceeds":3,"Meets Expectations":2,"Needs Improvement":1};
 
 var recordId = null;
 var reviewData = {};
 var clinicAge = null;
 var isLocked = false;
+var _t = new Date(new Date().toLocaleString("en-US", {timeZone:"America/Phoenix"}));
+  var submission_date = _t.getFullYear()+'-'+String(_t.getMonth()+1).padStart(2,'0')+'-'+String(_t.getDate()).padStart(2,'0');
 var formData = {
-  reviewer:"", submission_date: new Date().toISOString().split("T")[0],
+  reviewer:"", submission_date: submission_date,
   metrics:{}, overall_rating:"", rating_overridden:false, override_note:"",
   wins:"", misses:"", root_cause:"", focus_next_qtr:"", owner_notes:""
 };
@@ -175,6 +177,13 @@ function calcPct(m, actual, age){
   var a = parseFloat(actual.toString().replace(/[$,%]/g,""));
   var tv = parseFloat(t.toString());
   if(isNaN(a)||isNaN(tv)||tv===0) return null;
+  // Convert cancellation rate to show rate for calculation
+  if(m.convertToShow){
+    var showActual = 100 - a;
+    var showTarget = 100 - tv;
+    if(showTarget===0) return null;
+    return Math.round((showActual/showTarget)*100);
+  }
   return m.inverted ? Math.round((tv/a)*100) : Math.round((a/tv)*100);
 }
 
@@ -357,7 +366,7 @@ function renderForm(){
   s2.appendChild(s2hdr);
 
   var infoNote=mk("div","alert-gold");
-  infoNote.innerHTML='<strong>Status auto-calculates</strong> as you enter actuals. &nbsp;&#8805;110% = Elite &nbsp;|&nbsp; 100&#8211;110% = Green &nbsp;|&nbsp; 90&#8211;99% = Yellow &nbsp;|&nbsp; &lt;90% = Red &nbsp;|&nbsp; <em>&#8595; = lower is better</em>';
+  infoNote.innerHTML='<strong>Status auto-calculates</strong> as you enter actuals. &nbsp;&#8805;110% = Elite &nbsp;|&nbsp; 100&#8211;110% = Exceeds &nbsp;|&nbsp; 90&#8211;99% = Meets Expectations &nbsp;|&nbsp; &lt;90% = Needs Improvement &nbsp;|&nbsp; <em>&#8595; = lower is better</em>';
   s2.appendChild(infoNote);
 
   var tw=mk("div","tbl-wrap");
