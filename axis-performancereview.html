@@ -91,13 +91,17 @@ tr:last-child td{border-bottom:none}
         <p class="header-sub">CLINIC QUARTERLY PERFORMANCE REVIEW</p>
       </div>
     </div>
-    <div style="text-align:right">
-      <div id="headerTitle" style="font-size:13px;color:#e5be5e;font-weight:700;margin-top:2px"></div>
-    </div>
+    <div id="headerTitle" style="font-size:13px;color:#e5be5e;font-weight:700"></div>
   </div>
 </div>
 
-<div class="body" id="appBody"></div>
+<div class="body" id="appBody">
+  <div style="text-align:center;padding:60px 20px;color:#767b7f;font-size:13px">
+    <div style="width:32px;height:32px;border:3px solid #eef0f2;border-top:3px solid #e5be5e;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+    Loading review...
+  </div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <script>
 var WORKER_URL = "https://axisperformancereviewworker.drdylan.workers.dev";
@@ -129,6 +133,10 @@ var recordId = null;
 var reviewData = {};
 var clinicAge = null;
 var isLocked = false;
+var reviewers = [
+  {name:"Irais Lopez", title:"General Manager"},
+  {name:"Dylan Hernandez", title:"Owner"}
+];
 
 function getAZDate(){
   var d = new Date(new Date().toLocaleString("en-US",{timeZone:"America/Phoenix"}));
@@ -142,27 +150,7 @@ var formData = {
 };
 METRICS.forEach(function(m){ formData.metrics[m.id]={actual:""}; });
 
-var reviewers = [];
-
-function loadReviewers(){
-  return fetch(WORKER_URL+"/api/reviewers")
-    .then(function(r){return r.json();})
-    .then(function(data){
-      if(data.records){
-        reviewers=data.records.map(function(r){
-          return {
-            name: r.fields["Employee Full Name"]||"",
-            title: r.fields["Job Title"]||""
-          };
-        });
-      }
-    }).catch(function(){
-      reviewers=[
-        {name:"Irais Lopez",title:"General Manager"},
-        {name:"Dylan Hernandez",title:"Owner"}
-      ];
-    });
-}
+function getParam(n){ return new URLSearchParams(window.location.search).get(n); }
 
 function calcClinicAge(d){
   if(!d) return null;
@@ -267,12 +255,9 @@ function updateAutoRating(){
   var auto=scoreToRating(score);
   var box=document.getElementById("autoRatingBox");
   if(box){
-    if(score!==null){
-      box.innerHTML='<strong>Auto-calculated:</strong> Weighted score <strong>'+score.toFixed(2)+'</strong> &rarr; <strong>'+auto+'</strong>'
-        +'<span style="margin-left:8px;font-size:10px;color:#767b7f;font-weight:400">Revenue 25% &middot; Total Visits 20% &middot; New Patients 15% &middot; NP Show 10% &middot; Cancel 10% &middot; others 5%</span>';
-    } else {
-      box.textContent="Enter metric actuals above to auto-calculate the overall rating.";
-    }
+    box.innerHTML=auto
+      ?'<strong>Auto-calculated:</strong> Weighted score <strong>'+score.toFixed(2)+'</strong> &rarr; <strong>'+auto+'</strong><span style="margin-left:8px;font-size:10px;color:#767b7f;font-weight:400">Revenue 25% &middot; Total Visits 20% &middot; New Patients 15% &middot; NP Show 10% &middot; Cancel 10% &middot; others 5%</span>'
+      :"Enter metric actuals above to auto-calculate the overall rating.";
   }
   if(!formData.rating_overridden&&auto){
     formData.overall_rating=auto;
@@ -283,9 +268,19 @@ function updateAutoRating(){
   }
 }
 
+function showError(msg){
+  var body=document.getElementById("appBody");
+  body.innerHTML='';
+  var card=mkCard(); card.style.cssText="text-align:center;padding:60px 40px";
+  card.innerHTML='<div style="font-size:32px;margin-bottom:16px">&#9888;</div><div style="font-size:15px;font-weight:700;color:#000;margin-bottom:8px">Unable to Load Review</div><div style="font-size:13px;color:#767b7f;max-width:400px;margin:0 auto">'+msg+'</div>';
+  body.appendChild(card);
+  document.getElementById("headerTitle").textContent="";
+}
+
 function renderForm(){
   var body=document.getElementById("appBody");
   body.innerHTML="";
+
   var clinic=reviewData["Clinic (from Clinic)"]||reviewData["Clinic"]||"—";
   var quarter=reviewData["Quarter"]||"—";
   var year=reviewData["Year"]||"—";
@@ -298,13 +293,14 @@ function renderForm(){
     body.appendChild(ban);
   }
 
-  // S1
-  var s1=mkCard();
-  s1.appendChild(mkTitle("1","#000","Clinic Overview"));
+  // S1 Overview
+  var s1=mkCard(); s1.appendChild(mkTitle("1","#000","Clinic Overview"));
   var g1=mk("div","info-grid");
   [{l:"Clinic",v:clinic},{l:"Opening Date",v:openFmt},{l:"Clinic Age",v:clinicAge||"Unknown"},{l:"Quarter",v:quarter},{l:"Year",v:year},{l:"Review Period",v:quarter+" "+year}].forEach(function(i){
     var w=mk("div"); w.appendChild(mkLbl(i.l)); w.appendChild(mkLocked(i.v)); g1.appendChild(w);
   });
+
+  // Reviewer dropdown
   var rW=mk("div"); rW.appendChild(mkLbl("Reviewer"));
   var rSel=mk("select","field"); rSel.disabled=isLocked;
   var defOp=document.createElement("option"); defOp.value=""; defOp.textContent="Select reviewer…"; rSel.appendChild(defOp);
@@ -317,13 +313,15 @@ function renderForm(){
   });
   rSel.addEventListener("change",function(e){formData.reviewer=e.target.value;});
   rW.appendChild(rSel); g1.appendChild(rW);
+
+  // Submission date
   var dW=mk("div"); dW.appendChild(mkLbl("Submission Date"));
   var dInp=mk("input","field"); dInp.type="date"; dInp.value=formData.submission_date; dInp.disabled=isLocked;
   dInp.addEventListener("change",function(e){formData.submission_date=e.target.value;});
   dW.appendChild(dInp); g1.appendChild(dW);
   s1.appendChild(g1); body.appendChild(s1);
 
-  // S2
+  // S2 KPIs
   var s2=mkCard();
   var s2hdr=mk("div","flex-sb"); s2hdr.style.marginBottom="0";
   var s2t=mkTitle("2","#e5be5e","Clinic KPIs — Quarterly Actuals"); s2t.style.marginBottom="0";
@@ -336,7 +334,7 @@ function renderForm(){
   }
   s2.appendChild(s2hdr);
   var note=mk("div","alert-gold");
-  note.innerHTML='<strong>Status auto-calculates</strong> as you enter actuals. &nbsp;&#8805;110% = Elite &nbsp;|&nbsp; 100&#8211;110% = Exceeds &nbsp;|&nbsp; 90&#8211;99% = Meets Expectations &nbsp;|&nbsp; &lt;90% = Needs Improvement &nbsp;|&nbsp; <em>&#8595; = lower is better</em>';
+  note.innerHTML='<strong>Status auto-calculates</strong> as you enter actuals. &nbsp;&#8805;110% = Elite &nbsp;|&nbsp; 100&#8211;110% = Exceeds &nbsp;|&nbsp; 90&#8211;99% = Meets Expectations &nbsp;|&nbsp; &lt;90% = Needs Improvement';
   s2.appendChild(note);
   var tw=mk("div","tbl-wrap");
   var tbl=document.createElement("table");
@@ -365,7 +363,7 @@ function renderForm(){
   s2.appendChild(tn); body.appendChild(s2);
   METRICS.forEach(function(m){updateMetricRow(m);});
 
-  // S3
+  // S3 Narrative
   var s3=mkCard(); s3.appendChild(mkTitle("3","#000","Quarterly Commentary"));
   var ng=mk("div","narr-grid");
   [{key:"wins",l:"Top Wins This Quarter",ph:"What went well?",r:4},
@@ -381,7 +379,7 @@ function renderForm(){
   });
   s3.appendChild(ng); body.appendChild(s3);
 
-  // S4
+  // S4 Rating
   var s4=mkCard(); s4.appendChild(mkTitle("4","#000","Overall Clinic Rating"));
   var autoBox=mk("div","alert-gold"); autoBox.id="autoRatingBox";
   var sc2=calcWeightedScore(), ar2=scoreToRating(sc2);
@@ -424,7 +422,7 @@ function renderForm(){
   }
   body.appendChild(s4);
 
-  // Submit
+  // Submit bar
   var sub=mk("div","submit-bar");
   var subL=mk("div"); subL.style.cssText="display:flex;flex-direction:column;gap:4px";
   subL.innerHTML=isLocked
@@ -490,39 +488,44 @@ function handleSubmit(btn,msgEl){
 
 function showMsg(el,text,color){el.style.display="inline";el.style.color=color;el.textContent=text;}
 
-function showError(msg){
-  var body=document.getElementById("appBody"); body.innerHTML='';
-  var card=mk("div","card"); card.style.cssText="text-align:center;padding:60px 40px";
-  card.innerHTML='<div style="font-size:32px;margin-bottom:16px">&#9888;</div><div style="font-size:15px;font-weight:700;color:#000;margin-bottom:8px">Unable to Load Review</div><div style="font-size:13px;color:#767b7f;max-width:400px;margin:0 auto">'+msg+'</div>';
-  body.appendChild(card);
-  document.getElementById("headerTitle").textContent="Error";
-}
-
+// ── INIT ──
 (function(){
-  recordId=getParam("recordId");
-  if(recordId){
-    // Load review data and reviewers in parallel, but don't let reviewer failure block the form
-    var reviewPromise = fetch(WORKER_URL+"/api/quarterly-review?recordId="+recordId).then(function(r){return r.json();});
-    var reviewerPromise = loadReviewers();
+  recordId = getParam("recordId");
+  if(!recordId){
+    showError("No review record specified. Please open this form from the Airtable scorecard button.");
+    return;
+  }
 
-    reviewPromise.then(function(data){
-      if(data.fields){
-        reviewData=data.fields;
-        clinicAge=calcClinicAge(data.fields["Opening Date (from Clinic)"]||data.fields["Opening Date"]);
-        isLocked=data.fields["Status"]==="Completed";
-        document.getElementById("headerTitle").textContent=
-          (data.fields["Clinic (from Clinic)"]||data.fields["Clinic"]||"")+" — "+data.fields["Quarter"]+" "+data.fields["Year"];
-        // Wait for reviewers then render — if reviewers fail, render anyway with fallback
-        reviewerPromise.catch(function(){}).then(function(){ renderForm(); });
-      } else {
+  // Load review record first, then try to load reviewers
+  fetch(WORKER_URL+"/api/quarterly-review?recordId="+recordId)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(!data.fields){
         showError("Record not found. Please open this form from the Airtable button.");
+        return;
       }
-    }).catch(function(){
+      reviewData = data.fields;
+      clinicAge  = calcClinicAge(data.fields["Opening Date (from Clinic)"]||data.fields["Opening Date"]);
+      isLocked   = data.fields["Status"]==="Completed";
+      document.getElementById("headerTitle").textContent =
+        (data.fields["Clinic (from Clinic)"]||data.fields["Clinic"]||"")+" — "+data.fields["Quarter"]+" "+data.fields["Year"];
+
+      // Try to load reviewers from Airtable — render either way
+      fetch(WORKER_URL+"/api/reviewers")
+        .then(function(r){ return r.json(); })
+        .then(function(rData){
+          if(rData.records && rData.records.length){
+            reviewers = rData.records.map(function(r){
+              return {name:r.fields["Employee Full Name"]||"", title:r.fields["Job Title"]||""};
+            });
+          }
+        })
+        .catch(function(){})
+        .then(function(){ renderForm(); });
+    })
+    .catch(function(){
       showError("Unable to load review. Please check your connection and try again.");
     });
-  } else {
-    showError("No review record specified. Please open this form from the Airtable scorecard button.");
-  }
 })();
 </script>
 </body>
