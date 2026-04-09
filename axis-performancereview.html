@@ -149,7 +149,10 @@ var RATING_META = {
 var STATUS_SCORE = {"Elite":4,"Exceeds":3,"Meets Expectations":2,"Needs Improvement":1};
 
 var recordId=null, reviewData={}, clinicAge=null, isLocked=false;
-var reviewers=[{name:"Irais Lopez",title:"General Manager"},{name:"Dylan Hernandez",title:"Owner"}];
+var reviewers=[
+  {id:"", name:"Irais Lopez", title:"General Manager"},
+  {id:"", name:"Dylan Hernandez", title:"Owner"}
+];
 
 function getAZDate(){
   var d=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Phoenix"}));
@@ -313,7 +316,8 @@ function renderForm(){
   var defOp=document.createElement("option"); defOp.value=""; defOp.textContent="Select reviewer…"; rSel.appendChild(defOp);
   reviewers.forEach(function(r){
     var op=document.createElement("option");
-    op.value=r.name+" — "+r.title; op.textContent=r.name+" — "+r.title;
+    op.value=r.id;
+    op.textContent=r.name;
     if(formData.reviewer===op.value) op.selected=true;
     rSel.appendChild(op);
   });
@@ -515,7 +519,7 @@ function handleSubmit(btn,msgEl){
   if(!ar){showMsg(msgEl,"Please enter metric actuals to generate a rating.","#b91c1c");return;}
   btn.disabled=true; btn.textContent="Submitting…";
   var payload={
-    "Reviewer":formData.reviewer,
+    "Reviewer":formData.reviewer?[{id:formData.reviewer}]:null,
     "Submission Date":formData.submission_date,
     "Submitted At":new Date().toISOString(),
     "Status":"Completed",
@@ -569,7 +573,7 @@ function showMsg(el,text,color){el.style.display="inline";el.style.color=color;e
         .then(function(rData){
           if(rData.records&&rData.records.length){
             reviewers=rData.records.map(function(r){
-              return {name:r.fields["Employee Full Name"]||"",title:r.fields["Job Title"]||""};
+              return {id:r.id, name:r.fields["Employee Full Name"]||"", title:r.fields["Job Title"]||""};
             });
           }
         }).catch(function(){})
