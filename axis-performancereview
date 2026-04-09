@@ -1,371 +1,615 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Axis Spine & Sport — Performance Review</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Montserrat', sans-serif; background: #eef0f2; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #eef0f2; }
-    ::-webkit-scrollbar-thumb { background: #c3cace; border-radius: 3px; }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Axis Spine and Sport — Clinic Quarterly Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Montserrat',sans-serif;background:#eef0f2;min-height:100vh}
+input,select,textarea,button{font-family:'Montserrat',sans-serif}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#eef0f2}
+::-webkit-scrollbar-thumb{background:#c3cace;border-radius:3px}
+.header{background:linear-gradient(135deg,#000 0%,#1a1a1a 70%,#222 100%)}
+.gold-bar{height:4px;background:linear-gradient(90deg,#e5be5e,#f5e6b8,#e5be5e)}
+.header-inner{max-width:900px;margin:0 auto;padding:20px 20px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.logo-wrap{display:flex;align-items:center;gap:14px}
+.logo-box{width:44px;height:44px;border-radius:10px;background:#000;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(229,190,94,.27);border:1px solid rgba(229,190,94,.27);flex-shrink:0}
+.header h1{font-size:22px;font-weight:800;margin:0;line-height:1.2}
+.h1-brand{color:#e5be5e}
+.h1-and{color:#fff}
+.header-sub{font-size:11px;color:#c3cace;margin:2px 0 0;font-weight:400;letter-spacing:.5px}
+.body{max-width:900px;margin:0 auto;padding:24px 20px;display:flex;flex-direction:column;gap:20px}
+.card{background:#fff;border-radius:12px;border:1px solid #c3cace;padding:24px}
+.card-dark{background:#1a1a1a;border-radius:12px;border:1px solid #333;padding:24px}
+.section-title{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#1a1a1a;display:flex;align-items:center;margin-bottom:16px}
+.sbadge{width:26px;height:26px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;margin-right:10px;flex-shrink:0}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.narr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.rating-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+label.lbl{display:block;font-size:11px;font-weight:600;color:#767b7f;margin-bottom:4px;letter-spacing:.3px;text-transform:uppercase}
+.field{width:100%;border:1px solid #c3cace;border-radius:6px;padding:8px 10px;font-size:13px;outline:none;color:#000;background:#fff}
+.field:focus{border-color:#e5be5e}
+textarea.field{resize:vertical}
+.field-locked{width:100%;border:1px solid rgba(229,190,94,.3);border-radius:6px;padding:8px 10px;font-size:13px;background:rgba(229,190,94,.07);color:#1a1a1a;font-weight:700;min-height:36px;display:flex;align-items:center}
+.tbl-wrap{overflow-x:auto;margin-top:14px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:9px 12px;font-size:11px;font-weight:600;color:#767b7f;letter-spacing:.4px;text-transform:uppercase;border-bottom:2px solid #c3cace;background:#eef0f2}
+td{padding:9px 12px;border-bottom:1px solid #eef0f2;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.target-pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#c9a23e}
+.target-dot{width:6px;height:6px;border-radius:3px;background:#e5be5e;flex-shrink:0}
+.pct-cell{font-size:12px;font-weight:700;padding:3px 8px;border-radius:4px;display:inline-block;min-width:48px;text-align:center}
+.pct-red{background:#fde8e8;color:#b91c1c;border:1px solid #f5a3a3}
+.pct-yellow{background:#f5e6b8;color:#c9a23e;border:1px solid #e5be5e}
+.pct-green{background:#e6f4ea;color:#1a7a3a;border:1px solid #a8d5b8}
+.pct-elite{background:#1a1a1a;color:#e5be5e;border:1px solid #e5be5e}
+.pct-none{background:#eef0f2;color:#767b7f;border:1px solid #c3cace}
+.status-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;display:inline-block}
+.badge-green{background:#e6f4ea;color:#1a7a3a;border:1px solid #a8d5b8}
+.badge-yellow{background:#f5e6b8;color:#c9a23e;border:1px solid #e5be5e}
+.badge-red{background:#fde8e8;color:#b91c1c;border:1px solid #f5a3a3}
+.badge-elite{background:#1a1a1a;color:#e5be5e;border:1px solid #e5be5e}
+.badge-none{background:#eef0f2;color:#767b7f;border:1px solid #c3cace}
+.kpi-pill{font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px}
+.rating-btn{padding:14px 12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;text-align:center;border:2px solid #c3cace;background:#fff;color:#767b7f;width:100%;line-height:1.4}
+.rating-btn.sel-ni{background:#fde8e8;color:#b91c1c;border-color:#f5a3a3;box-shadow:0 0 0 3px rgba(245,163,163,.2)}
+.rating-btn.sel-me{background:#eef0f2;color:#000;border-color:#c3cace;box-shadow:0 0 0 3px rgba(195,202,206,.2)}
+.rating-btn.sel-ex{background:#f5e6b8;color:#c9a23e;border-color:#e5be5e;box-shadow:0 0 0 3px rgba(229,190,94,.2)}
+.rating-btn.sel-el{background:#1a1a1a;color:#e5be5e;border-color:#e5be5e;box-shadow:0 0 0 3px rgba(229,190,94,.2)}
+.submit-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:20px 24px;background:#fff;border-radius:12px;border:1px solid #c3cace}
+.btn{border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px}
+.btn-gold{background:#e5be5e;color:#000}
+.btn-gold:hover{background:#c9a23e}
+.btn-gold:disabled{opacity:.5;cursor:not-allowed}
+.alert-gold{background:rgba(229,190,94,.12);border:1px solid rgba(229,190,94,.4);border-radius:8px;padding:10px 14px;font-size:12px;color:#c9a23e;margin-bottom:14px}
+.locked-banner{background:rgba(229,190,94,.1);border:1px solid rgba(229,190,94,.4);border-radius:10px;padding:12px 16px;font-size:12px;color:#c9a23e;font-weight:600;display:flex;align-items:center;gap:8px}
+.flex-sb{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer{text-align:center;font-size:11px;color:#767b7f;padding:8px 0 16px;letter-spacing:.5px}
+.breakdown-box{margin-top:14px;padding:14px;background:#eef0f2;border-radius:8px;border-left:4px solid #e5be5e}
+</style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
 
-const ROLES = ["Office Manager","Chiropractor","Chiropractic Assistant","Front Desk","Virtual Agent","Massage Therapist","Director of Marketing"];
-const CLINIC_AGES = ["0–3 months","3–6 months","6–9 months","9–12 months","12+ months"];
-const STATUS_OPTIONS = ["Green","Yellow","Red"];
-const PASS_FAIL = ["Pass","Fail"];
-const RATING_OPTIONS = ["Needs Improvement","Meets Expectations","Exceeds","Elite"];
-
-const GENERAL_KPIS = [
-  { id: "trainual_completion", label: "Trainual Completion", standard: "100% assigned" },
-  { id: "disciplinary_standing", label: "Disciplinary Standing", standard: "No warnings (6 mo)" },
-  { id: "attendance", label: "Attendance", standard: "<10 missed days (6 mo)" },
-  { id: "professionalism", label: "Professionalism", standard: "Meets culture standard" },
-  { id: "company_events", label: "Company Events Attendance", standard: "100% attendance" },
-];
-
-const TIERED = {
-  om_revenue: {"0–3 months":"≥ $30K / mo","3–6 months":"≥ $50K / mo","6–9 months":"≥ $80K / mo","9–12 months":"≥ $110K / mo","12+ months":"≥ $150K / mo"},
-  om_new_patients: {"0–3 months":"≥ 40 NPs / mo","3–6 months":"≥ 60 NPs / mo","6–9 months":"≥ 80 NPs / mo","9–12 months":"≥ 100 NPs / mo","12+ months":"≥ 120 NPs / mo"},
-  dc_visit_volume: {"0–3 months":"≥ 350 visits / mo","3–6 months":"≥ 525 visits / mo","6–9 months":"≥ 700 visits / mo","9–12 months":"≥ 875 visits / mo","12+ months":"≥ 1,050 visits / mo"},
-  ca_google_reviews: {"0–3 months":"≥ 10 reviews / mo","3–6 months":"≥ 20 reviews / mo","6–9 months":"≥ 30 reviews / mo","9–12 months":"≥ 40 reviews / mo","12+ months":"≥ 50 reviews / mo"},
-  ca_reexams: {"0–3 months":"≥ 15 / mo","3–6 months":"≥ 25 / mo","6–9 months":"≥ 40 / mo","9–12 months":"≥ 55 / mo","12+ months":"≥ 70 / mo"},
-  ca_transition_exams: {"0–3 months":"≥ 5 / mo","3–6 months":"≥ 10 / mo","6–9 months":"≥ 18 / mo","9–12 months":"≥ 25 / mo","12+ months":"≥ 35 / mo"},
-  fd_massage_volume: {"0–3 months":"≥ 30 / mo","3–6 months":"≥ 50 / mo","6–9 months":"≥ 75 / mo","9–12 months":"≥ 100 / mo","12+ months":"≥ 130 / mo"},
-};
-
-const STATIC_TARGETS = {
-  om_staff_training:"100%", om_software_readiness:"100%", om_bcbs_claims:"< 40",
-  dc_cash_close:"≥ 25%", dc_hi_pi_consult:"≥ 35%", dc_hi_pi_mri:"≥ 40%", dc_chart_completion:"100% by EOD Friday",
-  ca_dme_hi:"≥ 75%",
-  fd_np_show:"≥ 80%", fd_rof_show:"≥ 80%", fd_rof_scheduled:"≥ 50%", fd_cancel_rate:"< 10%", fd_day1_day2:"100%", fd_airtable_followups:"< 10",
-  va_followups:"< 10", va_pi_followups:"< 5", va_lien_deadlines:"0", va_hospital_records:"0", va_final_bills:"0", va_verifications:"100%", va_day1_day2_errors:"Zero",
-  mt_utilization:"≥ 75%",
-  dm_linkedelf_nps:"8 / clinic / mo", dm_pi_referrals:"8 / clinic / mo", dm_unattached_pi:"4 / clinic / mo",
-};
-
-function resolveTarget(kpiId, clinicAge) {
-  if (TIERED[kpiId]) return (clinicAge && TIERED[kpiId][clinicAge]) ? TIERED[kpiId][clinicAge] : "Select clinic age ↑";
-  return STATIC_TARGETS[kpiId] || "—";
-}
-
-const ROLE_KPIS = {
-  "Office Manager": [{id:"om_revenue",label:"Revenue (by clinic age)"},{id:"om_new_patients",label:"New Patients"},{id:"om_staff_training",label:"Staff Training Completion"},{id:"om_software_readiness",label:"Software Readiness"},{id:"om_bcbs_claims",label:"BCBS Claims Outstanding"}],
-  "Chiropractor": [{id:"dc_cash_close",label:"Cash Close Rate"},{id:"dc_hi_pi_consult",label:"HI/PI Medical Consult"},{id:"dc_hi_pi_mri",label:"HI/PI MRI Rate"},{id:"dc_chart_completion",label:"Chart Completion (EOD Friday)"},{id:"dc_visit_volume",label:"Visit Volume (monthly)"}],
-  "Chiropractic Assistant": [{id:"ca_google_reviews",label:"Google Reviews"},{id:"ca_dme_hi",label:"DME (HI Patients)"},{id:"ca_reexams",label:"Re-Exams"},{id:"ca_transition_exams",label:"Transition Exams"}],
-  "Front Desk": [{id:"fd_np_show",label:"NP Show Rate"},{id:"fd_rof_show",label:"ROF Show Rate"},{id:"fd_rof_scheduled",label:"ROF Scheduled Out"},{id:"fd_cancel_rate",label:"Cancellation Rate"},{id:"fd_day1_day2",label:"Day 1 / Day 2 Accuracy"},{id:"fd_airtable_followups",label:"Airtable Follow-Ups"},{id:"fd_massage_volume",label:"Massage Volume"}],
-  "Virtual Agent": [{id:"va_followups",label:"Follow Ups Required"},{id:"va_pi_followups",label:"Pending PI Follow Ups"},{id:"va_lien_deadlines",label:"Lien Filing Deadlines"},{id:"va_hospital_records",label:"Hospital Records"},{id:"va_final_bills",label:"Final Bills/Records"},{id:"va_verifications",label:"Verifications on Time"},{id:"va_day1_day2_errors",label:"Day 1 / Day 2 Errors"}],
-  "Massage Therapist": [{id:"mt_utilization",label:"Schedule Utilization"}],
-  "Director of Marketing": [{id:"dm_linkedelf_nps",label:"LinkedElf NPs"},{id:"dm_pi_referrals",label:"Incoming PI Referrals"},{id:"dm_unattached_pi",label:"Unattached PI Cases"}],
-};
-
-const B = {
-  gold:"#e5be5e", goldLight:"#f5e6b8", goldDark:"#c9a23e", goldSubtle:"rgba(229,190,94,0.12)",
-  dkGrey:"#767b7f", ltGrey:"#c3cace", ltGreyBg:"#eef0f2",
-  white:"#ffffff", black:"#000000", offBlack:"#1a1a1a",
-};
-
-function init() {
-  const s = {};
-  ROLES.forEach(r => {
-    s[r] = { employee_name:"", reviewer_name:"", clinic_location:"", clinic_age:"", review_period:"", review_date:"", general:{}, role_kpis:{}, strengths:"", gaps:"", root_cause:"", action_plan:"", training_needed:"", overall_rating:"", reviewer_notes:"" };
-    GENERAL_KPIS.forEach(k => { s[r].general[k.id] = ""; });
-    (ROLE_KPIS[r]||[]).forEach(k => { s[r].role_kpis[k.id] = { actual:"", status:"" }; });
-  });
-  return s;
-}
-
-const elig = g => { const v = Object.values(g); return v.length && v.every(x=>x) ? v.every(x=>x==="Pass") : null; };
-const kpiPct = rk => { const e = Object.values(rk).filter(x=>x.status); return e.length ? Math.round(e.filter(x=>x.status==="Green").length/e.length*100) : null; };
-
-const toJSON = (role, d) => {
-  const r = {"Employee Name":d.employee_name, Role:role, Reviewer:d.reviewer_name, "Clinic Location":d.clinic_location, "Clinic Age":d.clinic_age, "Review Period":d.review_period, "Review Date":d.review_date, "In Good Standing":elig(d.general)?"Yes":"No"};
-  GENERAL_KPIS.forEach(k => r[`General: ${k.label}`] = d.general[k.id]||"");
-  (ROLE_KPIS[role]||[]).forEach(k => {
-    r[`${k.label} – Target`] = resolveTarget(k.id, d.clinic_age);
-    r[`${k.label} – Actual`] = d.role_kpis[k.id]?.actual||"";
-    r[`${k.label} – Status`] = d.role_kpis[k.id]?.status||"";
-  });
-  r["KPI % Met"] = kpiPct(d.role_kpis)??""
-  r.Strengths=d.strengths; r.Gaps=d.gaps; r["Root Cause"]=d.root_cause;
-  r["Action Plan (90-day)"]=d.action_plan; r["Training Needed"]=d.training_needed;
-  r["Overall Rating"]=d.overall_rating; r["Reviewer Notes"]=d.reviewer_notes;
-  return r;
-};
-
-const iS = { width:"100%", border:`1px solid ${B.ltGrey}`, borderRadius:6, padding:"7px 10px", fontSize:13, outline:"none", color:B.black, boxSizing:"border-box", fontFamily:"inherit", background:B.white };
-const fG = e => e.target.style.borderColor = B.gold;
-const bG = e => e.target.style.borderColor = B.ltGrey;
-
-const Sel = ({value, onChange, options, placeholder}) => (
-  <select value={value} onChange={e=>onChange(e.target.value)} style={iS} onFocus={fG} onBlur={bG}>
-    <option value="">{placeholder||"Select..."}</option>
-    {options.map(o=><option key={o} value={o}>{o}</option>)}
-  </select>
-);
-const Inp = ({value, onChange, placeholder, type="text"}) => (
-  <input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} style={iS} onFocus={fG} onBlur={bG} />
-);
-const Txt = ({value, onChange, placeholder, rows=3}) => (
-  <textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={rows} style={{...iS, resize:"vertical"}} onFocus={fG} onBlur={bG} />
-);
-
-const StatusBadge = ({value}) => {
-  const m = {Green:{bg:"#e6f4ea",c:"#1a7a3a",bd:"#a8d5b8"},Yellow:{bg:B.goldLight,c:B.goldDark,bd:B.gold},Red:{bg:"#fde8e8",c:"#b91c1c",bd:"#f5a3a3"},Pass:{bg:"#e6f4ea",c:"#1a7a3a",bd:"#a8d5b8"},Fail:{bg:"#fde8e8",c:"#b91c1c",bd:"#f5a3a3"}};
-  const s = m[value]||{bg:B.ltGreyBg,c:B.dkGrey,bd:B.ltGrey};
-  return <span style={{background:s.bg,color:s.c,border:`1px solid ${s.bd}`,fontSize:11,fontWeight:600,padding:"2px 10px",borderRadius:4,letterSpacing:0.3}}>{value||"—"}</span>;
-};
-
-const Card = ({children, style}) => <div style={{background:B.white,borderRadius:12,border:`1px solid ${B.ltGrey}`,padding:24,...style}}>{children}</div>;
-const SBadge = ({n, bg}) => <span style={{width:26,height:26,borderRadius:6,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800,color:B.white,background:bg,marginRight:8,flexShrink:0}}>{n}</span>;
-const STitle = ({children}) => <div style={{fontSize:14,fontWeight:800,textTransform:"uppercase",letterSpacing:1.2,color:B.offBlack,display:"flex",alignItems:"center"}}>{children}</div>;
-const Label = ({children}) => <label style={{display:"block",fontSize:11,fontWeight:500,color:B.dkGrey,marginBottom:4,letterSpacing:0.3}}>{children}</label>;
-
-const th = {textAlign:"left",padding:"8px 12px",fontSize:11,fontWeight:600,color:B.dkGrey,letterSpacing:0.4,textTransform:"uppercase",borderBottom:`2px solid ${B.ltGrey}`,background:B.ltGreyBg};
-const td = {padding:"8px 12px",borderBottom:`1px solid ${B.ltGreyBg}`,verticalAlign:"middle"};
-const btnBase = {border:"none",borderRadius:8,padding:"8px 16px",fontSize:12,fontWeight:700,cursor:"pointer",letterSpacing:0.3,fontFamily:"inherit"};
-
-function App() {
-  const [fd, setFd] = React.useState(init);
-  const [ar, setAr] = React.useState("Office Manager");
-  const [ej, setEj] = React.useState(null);
-  const [cm, setCm] = React.useState("");
-  const [syncing, setSyncing] = React.useState(false);
-  const [syncMsg, setSyncMsg] = React.useState("");
-
-  const WORKER_URL = "https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev";
-
-  const d = fd[ar];
-  const up = (f,v) => setFd(p=>({...p,[ar]:{...p[ar],[f]:v}}));
-  const upG = (id,v) => setFd(p=>({...p,[ar]:{...p[ar],general:{...p[ar].general,[id]:v}}}));
-  const upK = (id,f,v) => setFd(p=>({...p,[ar]:{...p[ar],role_kpis:{...p[ar].role_kpis,[id]:{...p[ar].role_kpis[id],[f]:v}}}}));
-
-  const el = elig(d.general);
-  const kp = kpiPct(d.role_kpis);
-  const roleHasTiered = (ROLE_KPIS[ar]||[]).some(k=>TIERED[k.id]);
-
-  const copy = () => { navigator.clipboard.writeText(JSON.stringify(ej,null,2)); setCm("Copied!"); setTimeout(()=>setCm(""),2000); };
-
-  const syncToAirtable = async (data) => {
-    setSyncing(true); setSyncMsg("");
-    try {
-      const res = await fetch(`${WORKER_URL}/api/airtable`, {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify(data),
-      });
-      const result = await res.json();
-      setSyncMsg(result.records ? "✓ Synced to Airtable!" : "⚠ Sync issue — check Worker logs");
-    } catch(e) {
-      setSyncMsg("✗ Sync failed — check Worker URL");
-    }
-    setSyncing(false);
-    setTimeout(()=>setSyncMsg(""),4000);
-  };
-
-  return (
-    <div style={{fontFamily:"'Montserrat',sans-serif",minHeight:"100vh",background:B.ltGreyBg}}>
-
-      {/* HEADER */}
-      <div style={{background:`linear-gradient(135deg,${B.black} 0%,${B.offBlack} 70%,#222 100%)`}}>
-        <div style={{height:4,background:`linear-gradient(90deg,${B.gold},${B.goldLight},${B.gold})`}} />
-        <div style={{maxWidth:960,margin:"0 auto",padding:"20px 20px 18px"}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12}}>
-            <div style={{display:"flex",alignItems:"center",gap:14}}>
-              <div style={{width:44,height:44,borderRadius:10,background:B.gold,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:18,color:B.black,letterSpacing:-1,boxShadow:`0 2px 12px ${B.gold}44`}}>AS</div>
-              <div>
-                <h1 style={{fontSize:22,fontWeight:800,letterSpacing:0.2,margin:0,lineHeight:1.2,color:B.white}}>Axis Spine <span style={{color:B.gold}}>&</span> Sport</h1>
-                <p style={{fontSize:12,color:B.ltGrey,margin:0,fontWeight:400,letterSpacing:0.5}}>QUARTERLY PERFORMANCE REVIEW SCORECARD</p>
-              </div>
-            </div>
-            <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
-              {syncMsg && <span style={{fontSize:12,fontWeight:600,color:syncMsg.startsWith("✓")?"#4ade80":"#fca5a5"}}>{syncMsg}</span>}
-              <button onClick={()=>{const data=toJSON(ar,d);setEj(data);syncToAirtable(data);}} style={{...btnBase,background:B.gold,color:B.black,opacity:syncing?.7:1}}>{syncing?"Syncing...":"Sync This Role"}</button>
-              <button onClick={()=>{const data=ROLES.map(r=>toJSON(r,fd[r]));setEj(data);syncToAirtable(data);}} style={{...btnBase,background:"transparent",color:B.white,border:`1px solid ${B.dkGrey}`}}>Sync All Roles</button>
-              <button onClick={()=>setEj(toJSON(ar,d))} style={{...btnBase,background:"transparent",color:B.ltGrey,border:`1px solid #444`}}>JSON Only</button>
-            </div>
-          </div>
-        </div>
+<div class="header">
+  <div class="gold-bar"></div>
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="logo-box">
+        <svg width="26" height="34" viewBox="0 0 26 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5e6b8"/><stop offset="50%" stop-color="#e5be5e"/><stop offset="100%" stop-color="#c9a23e"/></linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f0d98a"/><stop offset="50%" stop-color="#e5be5e"/><stop offset="100%" stop-color="#c9a23e"/></linearGradient>
+            <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5e6b8"/><stop offset="100%" stop-color="#e5be5e"/></linearGradient>
+          </defs>
+          <polygon points="0,0 26,0 13,10" fill="url(#g1)"/>
+          <polygon points="0,13 26,13 13,23" fill="url(#g2)"/>
+          <polygon points="0,26 26,26 13,36" fill="url(#g3)"/>
+        </svg>
       </div>
-
-      {/* TABS */}
-      <div style={{background:B.white,borderBottom:`1px solid ${B.ltGrey}`,position:"sticky",top:0,zIndex:10,boxShadow:"0 1px 4px rgba(0,0,0,0.06)"}}>
-        <div style={{maxWidth:960,margin:"0 auto",display:"flex",overflowX:"auto",padding:"0 20px"}}>
-          {ROLES.map(role=>(
-            <button key={role} onClick={()=>{setAr(role);setEj(null);}} style={{whiteSpace:"nowrap",padding:"14px 16px",fontSize:12,fontWeight:ar===role?700:400,border:"none",borderBottom:ar===role?`3px solid ${B.gold}`:"3px solid transparent",background:"none",color:ar===role?B.black:B.dkGrey,cursor:"pointer",letterSpacing:0.2,fontFamily:"inherit"}}>{role}</button>
-          ))}
-        </div>
-      </div>
-
-      {/* BODY */}
-      <div style={{maxWidth:960,margin:"0 auto",padding:"24px 20px",display:"flex",flexDirection:"column",gap:20}}>
-
-        {/* 1: Employee Info */}
-        <Card>
-          <STitle><SBadge n="1" bg={B.black} />Employee Information</STitle>
-          <div style={{marginTop:16,display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:14}}>
-            <div><Label>Employee Name</Label><Inp value={d.employee_name} onChange={v=>up("employee_name",v)} placeholder="Full name" /></div>
-            <div><Label>Reviewer Name</Label><Inp value={d.reviewer_name} onChange={v=>up("reviewer_name",v)} placeholder="Manager / reviewer" /></div>
-            <div><Label>Clinic Location</Label><Inp value={d.clinic_location} onChange={v=>up("clinic_location",v)} placeholder="e.g. Tempe, Gilbert, Phoenix" /></div>
-            <div><Label>Clinic Age</Label><Sel value={d.clinic_age} onChange={v=>up("clinic_age",v)} options={CLINIC_AGES} /></div>
-            <div><Label>Review Period</Label><Inp value={d.review_period} onChange={v=>up("review_period",v)} placeholder="e.g. Q1 2026 (Jan–Mar)" /></div>
-            <div><Label>Review Date</Label><Inp type="date" value={d.review_date} onChange={v=>up("review_date",v)} /></div>
-          </div>
-        </Card>
-
-        {/* 2: Eligibility */}
-        <Card>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
-            <STitle><SBadge n="2" bg={B.black} />Eligibility Gate — General KPIs</STitle>
-            {el!==null && <span style={{fontSize:11,fontWeight:700,padding:"4px 14px",borderRadius:20,background:el?"#e6f4ea":"#fde8e8",color:el?"#1a7a3a":"#b91c1c",border:`1px solid ${el?"#a8d5b8":"#f5a3a3"}`}}>{el?"✓ IN GOOD STANDING":"✗ NOT ELIGIBLE"}</span>}
-          </div>
-          <p style={{fontSize:11,color:B.dkGrey,margin:"8px 0 14px",fontStyle:"italic"}}>Any Fail = not bonus-eligible, not promotion-eligible.</p>
-          <div style={{overflowX:"auto"}}>
-            <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
-              <thead><tr><th style={th}>KPI</th><th style={th}>Standard</th><th style={{...th,width:130,textAlign:"center"}}>Result</th><th style={{...th,width:80,textAlign:"center"}}>Status</th></tr></thead>
-              <tbody>
-                {GENERAL_KPIS.map(k=>(
-                  <tr key={k.id}>
-                    <td style={{...td,fontWeight:600,color:B.black}}>{k.label}</td>
-                    <td style={{...td,color:B.dkGrey,fontSize:12}}>{k.standard}</td>
-                    <td style={{...td,textAlign:"center"}}><Sel value={d.general[k.id]} onChange={v=>upG(k.id,v)} options={PASS_FAIL} placeholder="—" /></td>
-                    <td style={{...td,textAlign:"center"}}><StatusBadge value={d.general[k.id]} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-
-        {/* 3: Role KPIs */}
-        <Card>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
-            <STitle><SBadge n="3" bg={B.gold} /><span style={{color:B.black}}>{ar}</span><span style={{color:B.dkGrey,fontWeight:500,marginLeft:6}}>— Role KPIs</span></STitle>
-            {kp!==null && <span style={{fontSize:11,fontWeight:700,padding:"4px 14px",borderRadius:20,background:kp>=100?"#e6f4ea":kp>=90?B.goldLight:"#fde8e8",color:kp>=100?"#1a7a3a":kp>=90?B.goldDark:"#b91c1c"}}>{kp}% GREEN</span>}
-          </div>
-          {roleHasTiered && !d.clinic_age && (
-            <div style={{marginTop:10,padding:"8px 14px",background:B.goldSubtle,border:`1px solid ${B.gold}44`,borderRadius:8,fontSize:12,color:B.goldDark,display:"flex",alignItems:"center",gap:6}}>
-              <span style={{fontSize:15}}>⚡</span>
-              <span>Select a <strong>Clinic Age</strong> above to populate tiered targets automatically.</span>
-            </div>
-          )}
-          <div style={{overflowX:"auto"}}>
-            <table style={{width:"100%",borderCollapse:"collapse",fontSize:13,marginTop:14}}>
-              <thead><tr><th style={th}>KPI</th><th style={{...th,width:155}}>Target</th><th style={{...th,width:140}}>Actual</th><th style={{...th,width:130,textAlign:"center"}}>Status</th><th style={{...th,width:80,textAlign:"center"}}>Badge</th></tr></thead>
-              <tbody>
-                {(ROLE_KPIS[ar]||[]).map(k=>{
-                  const target = resolveTarget(k.id, d.clinic_age);
-                  const isTiered = !!TIERED[k.id];
-                  const noAge = isTiered && !d.clinic_age;
-                  return (
-                    <tr key={k.id}>
-                      <td style={{...td,fontWeight:600,color:B.black}}>{k.label}</td>
-                      <td style={{...td,fontSize:12,color:noAge?B.ltGrey:isTiered?B.goldDark:B.dkGrey,fontWeight:isTiered&&d.clinic_age?600:400,fontStyle:noAge?"italic":"normal"}}>
-                        {isTiered && d.clinic_age && <span style={{display:"inline-block",width:6,height:6,borderRadius:3,background:B.gold,marginRight:6,verticalAlign:"middle"}} />}
-                        {target}
-                      </td>
-                      <td style={td}><Inp value={d.role_kpis[k.id]?.actual||""} onChange={v=>upK(k.id,"actual",v)} placeholder="Enter value" /></td>
-                      <td style={{...td,textAlign:"center"}}><Sel value={d.role_kpis[k.id]?.status||""} onChange={v=>upK(k.id,"status",v)} options={STATUS_OPTIONS} placeholder="—" /></td>
-                      <td style={{...td,textAlign:"center"}}><StatusBadge value={d.role_kpis[k.id]?.status||""} /></td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-
-        {/* 4: Qualitative */}
-        <Card>
-          <STitle><SBadge n="4" bg={B.black} />Quarterly Review — Qualitative Assessment</STitle>
-          <div style={{marginTop:16,display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:14}}>
-            <div><Label>Top 3 Strengths / Wins</Label><Txt value={d.strengths} onChange={v=>up("strengths",v)} placeholder="List the employee's top 3 wins this quarter..." /></div>
-            <div><Label>Bottom 2 KPI Gaps</Label><Txt value={d.gaps} onChange={v=>up("gaps",v)} placeholder="Weakest KPIs and what fell short..." /></div>
-            <div><Label>Root Cause Analysis</Label><Txt value={d.root_cause} onChange={v=>up("root_cause",v)} placeholder="Why did gaps occur?" /></div>
-            <div><Label>90-Day Action Plan</Label><Txt value={d.action_plan} onChange={v=>up("action_plan",v)} placeholder="Specific commitments for next quarter..." /></div>
-            <div><Label>Training / Support Needed</Label><Txt value={d.training_needed} onChange={v=>up("training_needed",v)} placeholder="Courses, mentorship, tools..." rows={2} /></div>
-            <div><Label>Reviewer Notes</Label><Txt value={d.reviewer_notes} onChange={v=>up("reviewer_notes",v)} placeholder="Additional context..." rows={2} /></div>
-          </div>
-        </Card>
-
-        {/* 5: Rating */}
-        <Card>
-          <STitle><SBadge n="5" bg={B.black} />Overall Performance Rating</STitle>
-          <div style={{marginTop:16,display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",gap:10}}>
-            {RATING_OPTIONS.map(r=>{
-              const sel = d.overall_rating===r;
-              const rs = {"Needs Improvement":{bg:"#fde8e8",c:"#b91c1c",bd:"#f5a3a3",i:"⚠"},"Meets Expectations":{bg:B.ltGreyBg,c:B.black,bd:B.ltGrey,i:"✓"},Exceeds:{bg:B.goldLight,c:B.goldDark,bd:B.gold,i:"★"},Elite:{bg:B.offBlack,c:B.gold,bd:B.gold,i:"🏆"}}[r];
-              return (
-                <button key={r} onClick={()=>up("overall_rating",r)} style={{padding:"14px 12px",borderRadius:10,cursor:"pointer",fontSize:13,fontWeight:700,textAlign:"center",background:sel?rs.bg:B.white,color:sel?rs.c:B.dkGrey,border:`2px solid ${sel?rs.bd:B.ltGrey}`,boxShadow:sel?`0 0 0 3px ${rs.bd}33`:"none",fontFamily:"inherit"}}>
-                  <span style={{marginRight:6}}>{rs.i}</span>{r}
-                </button>
-              );
-            })}
-          </div>
-          {d.overall_rating && kp!==null && (
-            <div style={{marginTop:14,padding:14,background:B.ltGreyBg,borderRadius:8,fontSize:12,color:B.dkGrey,borderLeft:`4px solid ${B.gold}`}}>
-              <strong style={{color:B.black}}>Advancement Logic: </strong>
-              {kp<90 && "Below 90% KPIs met — Needs Improvement tier."}
-              {kp>=90 && kp<100 && "90–99% KPIs met — Meets Expectations tier."}
-              {kp>=100 && "100% KPIs met — eligible for Exceeds or Elite (if growth KPIs exceeded)."}
-              {!el && " ⚠ General KPI fail: not bonus-eligible."}
-              {el && " ✓ In good standing: bonus-eligible."}
-            </div>
-          )}
-        </Card>
-
-        {/* Export Panel */}
-        {ej && (
-          <div style={{background:B.offBlack,borderRadius:12,border:"1px solid #333",padding:24,color:B.white}}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8,marginBottom:12}}>
-              <h2 style={{fontSize:13,fontWeight:800,textTransform:"uppercase",letterSpacing:1,margin:0,display:"flex",alignItems:"center",gap:8}}>
-                <span style={{color:B.gold,fontSize:16}}>⬡</span> Airtable-Ready JSON
-              </h2>
-              <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                {cm && <span style={{color:"#4ade80",fontSize:12,fontWeight:600}}>{cm}</span>}
-                <button onClick={copy} style={{...btnBase,background:B.gold,color:B.black}}>Copy JSON</button>
-                <button onClick={()=>setEj(null)} style={{background:"none",color:B.dkGrey,border:"none",fontSize:12,cursor:"pointer",padding:"6px 8px",fontFamily:"inherit"}}>Close</button>
-              </div>
-            </div>
-            <pre style={{background:"#111",borderRadius:8,padding:16,fontSize:11,overflowX:"auto",maxHeight:280,overflowY:"auto",color:B.ltGrey,lineHeight:1.6,margin:0,border:"1px solid #333"}}>{JSON.stringify(ej,null,2)}</pre>
-          </div>
-        )}
-
-        {/* Airtable Guide */}
-        <div style={{background:`${B.goldLight}44`,border:`1px solid ${B.gold}66`,borderRadius:12,padding:20}}>
-          <h3 style={{fontSize:13,fontWeight:800,color:B.black,margin:"0 0 8px",display:"flex",alignItems:"center",gap:6}}>
-            <span style={{fontSize:15}}>📋</span> Airtable Integration Guide
-          </h3>
-          <div style={{fontSize:12,color:B.offBlack,lineHeight:1.7}}>
-            <p style={{margin:"0 0 6px"}}><strong>Table:</strong> Create a "Performance Reviews" table with columns matching each JSON field.</p>
-            <p style={{margin:"0 0 6px"}}><strong>Field Types:</strong> Single Select for Status (Green/Yellow/Red), Pass/Fail, and Overall Rating. Long Text for Strengths, Gaps, Action Plan. Date for Review Date. Percent for KPI % Met.</p>
-            <p style={{margin:"0 0 6px"}}><strong>Sync Buttons:</strong> "Sync This Role" sends the current role's data to Airtable via the Cloudflare Worker. "Sync All Roles" sends all seven roles at once. Update the WORKER_URL constant in the file before deploying.</p>
-            <p style={{margin:"0 0 6px"}}><strong>Import:</strong> Airtable Scripting Extension, API POST, or CSV import.</p>
-            <p style={{margin:0}}><strong>Automations:</strong> "In Good Standing = No" → manager notification. "2 consecutive Red" → escalation flag.</p>
-          </div>
-        </div>
-
-        <div style={{textAlign:"center",fontSize:11,color:B.dkGrey,padding:"8px 0 16px",letterSpacing:0.5}}>
-          <span style={{color:B.gold,fontWeight:800}}>AXIS SPINE & SPORT</span>
-          <span style={{margin:"0 8px",color:B.ltGrey}}>|</span>
-          Performance Review System v1.0
-        </div>
+      <div>
+        <h1><span class="h1-brand">Axis Spine</span> <span class="h1-and">and</span> <span class="h1-brand">Sport</span></h1>
+        <p class="header-sub">CLINIC QUARTERLY PERFORMANCE REVIEW</p>
       </div>
     </div>
-  );
+    <div style="text-align:right">
+      <div style="font-size:11px;color:#767b7f;font-weight:500">Submitted to ownership by General Manager</div>
+      <div id="headerTitle" style="font-size:13px;color:#e5be5e;font-weight:700;margin-top:2px">—</div>
+    </div>
+  </div>
+</div>
+
+<div class="body" id="appBody"></div>
+
+<script>
+var WORKER_URL = "https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev";
+
+var METRICS = [
+  {id:"revenue",          label:"Revenue",          unit:"$", inverted:false, weight:0.25, tiers:{"0-3 months":90000,"3-6 months":150000,"6-9 months":240000,"9-12 months":330000,"12+ months":450000}},
+  {id:"total_visits",     label:"Total Visits",     unit:"",  inverted:false, weight:0.20, tiers:{"0-3 months":1050,"3-6 months":1575,"6-9 months":2100,"9-12 months":2625,"12+ months":3150}},
+  {id:"new_patients",     label:"New Patients",     unit:"",  inverted:false, weight:0.15, tiers:{"0-3 months":120,"3-6 months":180,"6-9 months":240,"9-12 months":300,"12+ months":360}},
+  {id:"np_show_rate",     label:"NP Show Rate",     unit:"%", inverted:false, weight:0.10, staticVal:80},
+  {id:"cancel_rate",      label:"Cancellation Rate",unit:"%", inverted:true,  weight:0.10, staticVal:10},
+  {id:"total_massages",   label:"Total Massages",   unit:"",  inverted:false, weight:0.05, tiers:{"0-3 months":90,"3-6 months":150,"6-9 months":225,"9-12 months":300,"12+ months":390}},
+  {id:"google_reviews",   label:"Google Reviews",   unit:"",  inverted:false, weight:0.05, tiers:{"0-3 months":30,"3-6 months":60,"6-9 months":90,"9-12 months":120,"12+ months":150}},
+  {id:"reexams",          label:"Re-Exams",         unit:"",  inverted:false, weight:0.05, tiers:{"0-3 months":45,"3-6 months":75,"6-9 months":120,"9-12 months":165,"12+ months":210}},
+  {id:"rof_show_rate",    label:"ROF Show Rate",    unit:"%", inverted:false, weight:0.05, staticVal:80},
+  {id:"transition_exams", label:"Transition Exams", unit:"",  inverted:false, weight:0,    tiers:{"0-3 months":15,"3-6 months":30,"6-9 months":54,"9-12 months":75,"12+ months":105}},
+  {id:"rof_scheduled",    label:"ROF Scheduled Out",unit:"%", inverted:false, weight:0,    staticVal:50},
+];
+
+var RATINGS = ["Needs Improvement","Meets Expectations","Exceeds","Elite"];
+var RATING_META = {
+  "Needs Improvement":{icon:"&#9888;",cls:"sel-ni"},
+  "Meets Expectations":{icon:"&#10003;",cls:"sel-me"},
+  "Exceeds":{icon:"&#9733;",cls:"sel-ex"},
+  "Elite":{icon:"&#127942;",cls:"sel-el"}
+};
+var STATUS_SCORE = {Elite:4,Green:3,Yellow:2,Red:1};
+
+var recordId = null;
+var reviewData = {};
+var clinicAge = null;
+var isLocked = false;
+var formData = {
+  reviewer:"", submission_date: new Date().toISOString().split("T")[0],
+  metrics:{}, overall_rating:"", rating_overridden:false, override_note:"",
+  wins:"", misses:"", root_cause:"", focus_next_qtr:"", owner_notes:""
+};
+METRICS.forEach(function(m){ formData.metrics[m.id] = {actual:""}; });
+
+function getParam(name){
+  return new URLSearchParams(window.location.search).get(name);
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+function calcClinicAge(d){
+  if(!d) return null;
+  var open = new Date(d);
+  var now = new Date();
+  var months = (now.getFullYear()-open.getFullYear())*12+(now.getMonth()-open.getMonth());
+  if(months<3)  return "0-3 months";
+  if(months<6)  return "3-6 months";
+  if(months<9)  return "6-9 months";
+  if(months<12) return "9-12 months";
+  return "12+ months";
+}
+
+function resolveTarget(m, age){
+  if(m.tiers) return (age && m.tiers[age]) ? m.tiers[age] : null;
+  return m.staticVal != null ? m.staticVal : null;
+}
+
+function formatTarget(m, age){
+  var t = resolveTarget(m, age);
+  if(t===null) return "—";
+  if(m.unit==="$") return "$"+t.toLocaleString();
+  if(m.unit==="%") return t+"%";
+  return t.toLocaleString();
+}
+
+function calcPct(m, actual, age){
+  var t = resolveTarget(m, age);
+  if(!actual || actual==="" || t===null) return null;
+  var a = parseFloat(actual.toString().replace(/[$,%]/g,""));
+  var tv = parseFloat(t.toString());
+  if(isNaN(a)||isNaN(tv)||tv===0) return null;
+  return m.inverted ? Math.round((tv/a)*100) : Math.round((a/tv)*100);
+}
+
+function calcStatus(m, actual, age){
+  var pct = calcPct(m, actual, age);
+  if(pct===null) return null;
+  if(pct>=110) return "Elite";
+  if(pct>=100) return "Green";
+  if(pct>=90)  return "Yellow";
+  return "Red";
+}
+
+function calcWeightedScore(){
+  var totalWeight=0, weightedSum=0;
+  METRICS.forEach(function(m){
+    if(!m.weight) return;
+    var st = calcStatus(m, formData.metrics[m.id].actual, clinicAge);
+    if(!st) return;
+    weightedSum += STATUS_SCORE[st]*m.weight;
+    totalWeight += m.weight;
+  });
+  if(!totalWeight) return null;
+  return weightedSum/totalWeight;
+}
+
+function scoreToRating(score){
+  if(score===null) return null;
+  if(score>=3.5)  return "Elite";
+  if(score>=2.75) return "Exceeds";
+  if(score>=2.0)  return "Meets Expectations";
+  return "Needs Improvement";
+}
+
+function getAutoRating(){
+  return scoreToRating(calcWeightedScore());
+}
+
+function pctClass(pct){
+  if(pct===null) return "pct-none";
+  if(pct>=110) return "pct-elite";
+  if(pct>=100) return "pct-green";
+  if(pct>=90)  return "pct-yellow";
+  return "pct-red";
+}
+
+function statusClass(st){
+  var map={Green:"badge-green",Yellow:"badge-yellow",Red:"badge-red",Elite:"badge-elite"};
+  return map[st]||"badge-none";
+}
+
+function mk(tag,cls){
+  var el=document.createElement(tag);
+  if(cls) el.className=cls;
+  return el;
+}
+
+function mkCard(){ return mk("div","card"); }
+
+function mkTitle(n,bg,text){
+  var d=mk("div","section-title");
+  var tc=(bg==="#e5be5e")?"#000":"#fff";
+  d.innerHTML='<span class="sbadge" style="background:'+bg+';color:'+tc+'">'+n+'</span>'+text;
+  return d;
+}
+
+function mkLbl(text){
+  var l=mk("label","lbl");
+  l.textContent=text;
+  return l;
+}
+
+function mkLocked(val){
+  var d=mk("div","field-locked");
+  d.textContent=val||"—";
+  return d;
+}
+
+function updateMetricRow(m){
+  var actual=formData.metrics[m.id].actual;
+  var pct=calcPct(m,actual,clinicAge);
+  var st=calcStatus(m,actual,clinicAge);
+  var pctEl=document.getElementById("pct-"+m.id);
+  var stEl=document.getElementById("st-"+m.id);
+  if(pctEl) pctEl.innerHTML='<span class="pct-cell '+pctClass(pct)+'">'+(pct!==null?pct+"%":"—")+'</span>';
+  if(stEl)  stEl.innerHTML='<span class="status-badge '+statusClass(st)+'">'+(st||"—")+'</span>';
+}
+
+function updateAutoRating(){
+  var score=calcWeightedScore();
+  var auto=scoreToRating(score);
+  var box=document.getElementById("autoRatingBox");
+  if(box && score!==null){
+    box.innerHTML='<strong>Auto-calculated:</strong> Weighted score <strong>'+score.toFixed(2)+'</strong> &rarr; <strong>'+auto+'</strong>'
+      +'<span style="margin-left:8px;font-size:10px;color:#767b7f;font-weight:400">Revenue 25% &middot; Total Visits 20% &middot; New Patients 15% &middot; NP Show 10% &middot; Cancel 10% &middot; others 5%</span>';
+  }
+  if(!formData.rating_overridden && auto){
+    formData.overall_rating=auto;
+    // Update button highlights
+    document.querySelectorAll(".rating-btn").forEach(function(b){
+      b.className="rating-btn";
+      if(b.dataset.rating===auto) b.classList.add(RATING_META[auto].cls);
+    });
+  }
+}
+
+function useDemoMode(){
+  reviewData={"Clinic (from Clinic)":"Tempe","Quarter":"Q2","Year":"2026","Opening Date (from Clinic)":"2022-03-01","Status":"Not Started"};
+  clinicAge=calcClinicAge("2022-03-01");
+  document.getElementById("headerTitle").textContent="Tempe — Q2 2026 (Demo)";
+  renderForm();
+}
+
+function renderForm(){
+  var body=document.getElementById("appBody");
+  body.innerHTML="";
+
+  var clinic  = reviewData["Clinic (from Clinic)"]||reviewData["Clinic"]||"—";
+  var quarter = reviewData["Quarter"]||"—";
+  var year    = reviewData["Year"]||"—";
+  var openDate= reviewData["Opening Date (from Clinic)"]||reviewData["Opening Date"]||"";
+  var openFmt = openDate ? new Date(openDate+"T00:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"}) : "Not on file";
+
+  if(isLocked){
+    var ban=mk("div","locked-banner");
+    ban.innerHTML='<span style="font-size:16px">&#128274;</span> This review has been submitted and is locked.';
+    body.appendChild(ban);
+  }
+
+  // ── S1: Overview ──
+  var s1=mkCard();
+  s1.appendChild(mkTitle("1","#000","Clinic Overview"));
+  var g1=mk("div","info-grid");
+  [{l:"Clinic",v:clinic},{l:"Opening Date",v:openFmt},{l:"Clinic Age",v:clinicAge||"Unknown"},{l:"Quarter",v:quarter},{l:"Year",v:year},{l:"Review Period",v:quarter+" "+year}].forEach(function(item){
+    var w=mk("div");
+    w.appendChild(mkLbl(item.l));
+    w.appendChild(mkLocked(item.v));
+    g1.appendChild(w);
+  });
+
+  // Reviewer
+  var rW=mk("div");
+  rW.appendChild(mkLbl("Reviewer"));
+  var rSel=mk("select","field");
+  rSel.disabled=isLocked;
+  ["Select reviewer…","Irais Lopez — General Manager","Dylan Hernandez — Owner"].forEach(function(o){
+    var op=document.createElement("option");
+    op.value=o==="Select reviewer…"?"":o;
+    op.textContent=o;
+    if(formData.reviewer===op.value) op.selected=true;
+    rSel.appendChild(op);
+  });
+  rSel.addEventListener("change",function(e){ formData.reviewer=e.target.value; });
+  rW.appendChild(rSel);
+  g1.appendChild(rW);
+
+  // Date
+  var dW=mk("div");
+  dW.appendChild(mkLbl("Submission Date"));
+  var dInp=mk("input","field");
+  dInp.type="date"; dInp.value=formData.submission_date; dInp.disabled=isLocked;
+  dInp.addEventListener("change",function(e){ formData.submission_date=e.target.value; });
+  dW.appendChild(dInp);
+  g1.appendChild(dW);
+
+  s1.appendChild(g1);
+  body.appendChild(s1);
+
+  // ── S2: KPIs ──
+  var s2=mkCard();
+  var s2hdr=mk("div","flex-sb");
+  s2hdr.style.marginBottom="0";
+  var s2title=mkTitle("2","#e5be5e","Clinic KPIs — Quarterly Actuals");
+  s2title.style.marginBottom="0";
+  s2hdr.appendChild(s2title);
+
+  var score=calcWeightedScore();
+  var autoR=scoreToRating(score);
+  if(autoR){
+    var pill=mk("span","kpi-pill");
+    var pillColors={Elite:"background:#1a1a1a;color:#e5be5e",Exceeds:"background:#f5e6b8;color:#c9a23e","Meets Expectations":"background:#eef0f2;color:#000","Needs Improvement":"background:#fde8e8;color:#b91c1c"};
+    pill.style.cssText=pillColors[autoR]||"";
+    pill.textContent=autoR;
+    s2hdr.appendChild(pill);
+  }
+  s2.appendChild(s2hdr);
+
+  var infoNote=mk("div","alert-gold");
+  infoNote.innerHTML='<strong>Status auto-calculates</strong> as you enter actuals. &nbsp;&#8805;110% = Elite &nbsp;|&nbsp; 100&#8211;110% = Green &nbsp;|&nbsp; 90&#8211;99% = Yellow &nbsp;|&nbsp; &lt;90% = Red &nbsp;|&nbsp; <em>&#8595; = lower is better</em>';
+  s2.appendChild(infoNote);
+
+  var tw=mk("div","tbl-wrap");
+  var tbl=document.createElement("table");
+  tbl.innerHTML='<thead><tr><th>Metric</th><th style="width:130px">Target</th><th style="width:150px">Actual</th><th style="width:90px;text-align:center">% Achieved</th><th style="width:100px;text-align:center">Status</th></tr></thead>';
+  var tbody=document.createElement("tbody");
+
+  METRICS.forEach(function(m){
+    var tr=document.createElement("tr");
+    var t=resolveTarget(m,clinicAge);
+    var tFmt=formatTarget(m,clinicAge);
+
+    var td1=mk("td"); td1.style.cssText="font-weight:600;color:#000";
+    td1.textContent=m.label+(m.inverted?" ↓":"")+(m.weight===0?" *":"");
+
+    var td2=mk("td");
+    if(t!==null){ td2.innerHTML='<span class="target-pill"><span class="target-dot"></span>'+tFmt+'</span>'; }
+    else { td2.innerHTML='<span style="color:#c3cace;font-size:12px;font-style:italic">Select clinic age</span>'; }
+
+    var td3=mk("td");
+    var inp=mk("input","field");
+    inp.type="text"; inp.placeholder=m.unit==="$"?"$0":m.unit==="%"?"0%":"0";
+    inp.value=formData.metrics[m.id].actual||"";
+    inp.disabled=isLocked;
+    (function(metric){ inp.addEventListener("input",function(e){ formData.metrics[metric.id].actual=e.target.value; updateMetricRow(metric); updateAutoRating(); }); })(m);
+    td3.appendChild(inp);
+
+    var td4=mk("td"); td4.style.textAlign="center"; td4.id="pct-"+m.id;
+    var td5=mk("td"); td5.style.textAlign="center"; td5.id="st-"+m.id;
+
+    tr.append(td1,td2,td3,td4,td5);
+    tbody.appendChild(tr);
+  });
+
+  tbl.appendChild(tbody);
+  tw.appendChild(tbl);
+  s2.appendChild(tw);
+
+  var tblNote=mk("p");
+  tblNote.style.cssText="font-size:10px;color:#767b7f;margin-top:8px;font-style:italic";
+  tblNote.textContent="* Transition Exams and ROF Scheduled Out are tracked but not weighted in the overall score.";
+  s2.appendChild(tblNote);
+  body.appendChild(s2);
+  METRICS.forEach(function(m){ updateMetricRow(m); });
+
+  // ── S3: Narrative ──
+  var s3=mkCard();
+  s3.appendChild(mkTitle("3","#000","Quarterly Commentary"));
+  var ng=mk("div","narr-grid");
+  [{key:"wins",l:"Top Wins This Quarter",ph:"What went well? Key achievements, standout moments…",r:4},
+   {key:"misses",l:"Key Misses / Underperformance",ph:"Which metrics fell short and what was the impact?",r:4},
+   {key:"root_cause",l:"Root Cause Analysis",ph:"Why did misses occur? People, process, external factors?",r:4},
+   {key:"focus_next_qtr",l:"Focus Areas — Next Quarter",ph:"Top 2–3 priorities heading into next quarter…",r:4},
+   {key:"owner_notes",l:"Notes for Ownership",ph:"Anything ownership should know…",r:3}
+  ].forEach(function(item){
+    var w=mk("div");
+    w.appendChild(mkLbl(item.l));
+    var ta=mk("textarea","field");
+    ta.placeholder=item.ph; ta.rows=item.r; ta.value=formData[item.key]||""; ta.disabled=isLocked;
+    (function(k){ ta.addEventListener("input",function(e){ formData[k]=e.target.value; }); })(item.key);
+    w.appendChild(ta);
+    ng.appendChild(w);
+  });
+  s3.appendChild(ng);
+  body.appendChild(s3);
+
+  // ── S4: Rating ──
+  var s4=mkCard();
+  s4.appendChild(mkTitle("4","#000","Overall Clinic Rating"));
+
+  var autoBox=mk("div","alert-gold");
+  autoBox.id="autoRatingBox";
+  var sc2=calcWeightedScore();
+  var ar2=scoreToRating(sc2);
+  if(ar2){
+    autoBox.innerHTML='<strong>Auto-calculated:</strong> Weighted score <strong>'+(sc2?sc2.toFixed(2):"—")+'</strong> &rarr; <strong>'+ar2+'</strong>'
+      +'<span style="margin-left:8px;font-size:10px;color:#767b7f;font-weight:400">Revenue 25% &middot; Total Visits 20% &middot; New Patients 15% &middot; NP Show 10% &middot; Cancel 10% &middot; others 5%</span>';
+  } else {
+    autoBox.textContent="Enter metric actuals above to auto-calculate the overall rating.";
+  }
+  s4.appendChild(autoBox);
+
+  var rg=mk("div","rating-grid");
+  var activeRating=formData.overall_rating||ar2;
+  RATINGS.forEach(function(rv){
+    var meta=RATING_META[rv];
+    var b=mk("button","rating-btn");
+    b.dataset.rating=rv;
+    b.disabled=isLocked;
+    if(activeRating===rv) b.classList.add(meta.cls);
+    var isAuto=(rv===ar2&&!formData.rating_overridden);
+    b.innerHTML='<span style="margin-right:6px">'+meta.icon+'</span>'+rv+(isAuto?'<br><span style="font-size:9px;opacity:.6">AUTO</span>':'');
+    (function(rating){ b.onclick=function(){
+      if(rating===ar2){ formData.overall_rating=rating; formData.rating_overridden=false; formData.override_note=""; }
+      else { formData.overall_rating=rating; formData.rating_overridden=true; }
+      renderForm();
+    }; })(rv);
+    rg.appendChild(b);
+  });
+  s4.appendChild(rg);
+
+  if(formData.rating_overridden && formData.overall_rating){
+    var ovW=mk("div"); ovW.style.marginTop="14px";
+    ovW.appendChild(mkLbl("Override Reason *"));
+    var ovTa=mk("textarea","field");
+    ovTa.placeholder="Explain why the rating differs from the auto-calculated score…";
+    ovTa.rows=3; ovTa.value=formData.override_note||""; ovTa.disabled=isLocked;
+    ovTa.addEventListener("input",function(e){ formData.override_note=e.target.value; });
+    ovW.appendChild(ovTa);
+    s4.appendChild(ovW);
+  }
+
+  if(sc2!==null){
+    var bd=mk("div","breakdown-box");
+    var bdRows=METRICS.filter(function(m){ return m.weight>0; }).map(function(m){
+      var st=calcStatus(m,formData.metrics[m.id].actual,clinicAge);
+      var sc3=st?STATUS_SCORE[st]:null;
+      var contrib=sc3!==null?(sc3*m.weight).toFixed(3):"—";
+      return '<span style="font-size:11px;color:#767b7f">'+m.label+': <strong style="color:#000">'+(st||"—")+'</strong> &times; '+(m.weight*100).toFixed(0)+'% = <strong style="color:#000">'+contrib+'</strong></span>';
+    }).join('<span style="color:#c3cace;margin:0 4px">|</span>');
+    bd.innerHTML='<div style="font-size:11px;font-weight:700;color:#000;margin-bottom:6px">Score Breakdown</div><div style="display:flex;flex-wrap:wrap;gap:6px;line-height:2.2">'+bdRows+'</div>';
+    s4.appendChild(bd);
+  }
+  body.appendChild(s4);
+
+  // ── Submit ──
+  var sub=mk("div","submit-bar");
+  var subL=mk("div"); subL.style.cssText="display:flex;flex-direction:column;gap:4px";
+  subL.innerHTML=isLocked
+    ?'<div style="font-size:13px;font-weight:700;color:#1a7a3a">&#10003; Review Submitted</div><div style="font-size:11px;color:#767b7f">This review has been completed and locked.</div>'
+    :'<div style="font-size:13px;font-weight:700;color:#000">Ready to Submit?</div><div style="font-size:11px;color:#767b7f">Syncs to Airtable and notifies ownership via email.</div>';
+  var subR=mk("div"); subR.style.cssText="display:flex;align-items:center;gap:12px;flex-wrap:wrap";
+  var msgEl=mk("span"); msgEl.style.cssText="font-size:12px;font-weight:600;display:none";
+  var submitBtn=mk("button","btn btn-gold");
+  submitBtn.textContent=isLocked?"Submitted":"Submit Review";
+  submitBtn.disabled=isLocked;
+  submitBtn.onclick=function(){ handleSubmit(submitBtn,msgEl); };
+  subR.appendChild(msgEl); subR.appendChild(submitBtn);
+  sub.appendChild(subL); sub.appendChild(subR);
+  body.appendChild(sub);
+
+  // ── Footer ──
+  var ft=mk("div","footer");
+  ft.innerHTML='<span style="color:#e5be5e;font-weight:800">AXIS SPINE AND SPORT</span><span style="margin:0 8px;color:#c3cace">|</span>Clinic Quarterly Review v2.0';
+  body.appendChild(ft);
+}
+
+function handleSubmit(btn,msgEl){
+  if(!formData.reviewer){ showMsg(msgEl,"Please select a reviewer.","#b91c1c"); return; }
+  if(!formData.overall_rating){ showMsg(msgEl,"Please select an overall rating.","#b91c1c"); return; }
+  if(formData.rating_overridden && !formData.override_note){ showMsg(msgEl,"Please provide an override reason.","#b91c1c"); return; }
+
+  btn.disabled=true; btn.textContent="Submitting…";
+
+  var score=calcWeightedScore();
+  var payload={
+    "Reviewer":formData.reviewer,
+    "Submission Date":formData.submission_date,
+    "Submitted At":new Date().toISOString(),
+    "Status":"Completed",
+    "Overall Rating":formData.overall_rating,
+    "Rating Overridden":formData.rating_overridden?"Yes":"No",
+    "Override Reason":formData.override_note||"",
+    "Weighted Score":score?parseFloat(score.toFixed(2)):null,
+    "Wins This Quarter":formData.wins,
+    "Key Misses":formData.misses,
+    "Root Cause":formData.root_cause,
+    "Focus — Next Quarter":formData.focus_next_qtr,
+    "Notes for Ownership":formData.owner_notes
+  };
+
+  METRICS.forEach(function(m){
+    var actual=formData.metrics[m.id].actual;
+    payload[m.label+" — Actual"]=actual;
+    payload[m.label+" — Target"]=formatTarget(m,clinicAge);
+    payload[m.label+" — Status"]=calcStatus(m,actual,clinicAge)||"";
+    payload[m.label+" — % Achieved"]=calcPct(m,actual,clinicAge)||"";
+  });
+
+  if(WORKER_URL.indexOf("YOUR-WORKER")>-1){
+    showMsg(msgEl,"Worker not yet live — JSON ready below.","#c9a23e");
+    btn.disabled=false; btn.textContent="Submit Review";
+    showFallback(payload);
+    return;
+  }
+
+  fetch(WORKER_URL+"/api/quarterly-review",{
+    method:"PATCH",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({recordId:recordId,fields:payload})
+  }).then(function(r){ return r.json(); }).then(function(result){
+    if(result.id){
+      showMsg(msgEl,"Submitted — Airtable updated and ownership notified.","#1a7a3a");
+      btn.textContent="Submitted";
+      btn.style.cssText="background:#e6f4ea;color:#1a7a3a;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:700";
+      isLocked=true;
+    } else { throw new Error(); }
+  }).catch(function(){
+    showMsg(msgEl,"Sync failed — check Worker logs.","#b91c1c");
+    btn.disabled=false; btn.textContent="Submit Review";
+  });
+}
+
+function showMsg(el,text,color){
+  el.style.display="inline"; el.style.color=color; el.textContent=text;
+}
+
+function showFallback(payload){
+  var ex=document.getElementById("fallback"); if(ex) ex.remove();
+  var p=mk("div","card-dark"); p.id="fallback";
+  p.innerHTML='<div class="flex-sb" style="margin-bottom:12px">'
+    +'<h2 style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#fff;margin:0;display:flex;align-items:center;gap:8px"><span style="color:#e5be5e">&#x2B21;</span> Airtable-Ready JSON</h2>'
+    +'<div style="display:flex;gap:8px;align-items:center">'
+    +'<span id="cpMsg" style="color:#4ade80;font-size:12px;font-weight:600;display:none">Copied!</span>'
+    +'<button class="btn btn-gold" onclick="copyFB()">Copy JSON</button>'
+    +'<button style="background:none;color:#767b7f;border:none;font-size:12px;cursor:pointer;padding:6px 8px" onclick="document.getElementById(\'fallback\').remove()">Close</button>'
+    +'</div></div>'
+    +'<pre id="fbPre" style="background:#111;border-radius:8px;padding:16px;font-size:11px;overflow-x:auto;max-height:300px;overflow-y:auto;color:#c3cace;line-height:1.6;margin:0;border:1px solid #333;white-space:pre-wrap;word-break:break-all">'+JSON.stringify(payload,null,2)+'</pre>';
+  document.getElementById("appBody").appendChild(p);
+}
+
+function copyFB(){
+  var pre=document.getElementById("fbPre"); if(!pre) return;
+  navigator.clipboard.writeText(pre.textContent);
+  var m=document.getElementById("cpMsg"); m.style.display="inline";
+  setTimeout(function(){ m.style.display="none"; },2000);
+}
+
+// ── INIT ──
+(function(){
+  recordId=getParam("recordId");
+  if(recordId && WORKER_URL.indexOf("YOUR-WORKER")===-1){
+    fetch(WORKER_URL+"/api/quarterly-review?recordId="+recordId)
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data.fields){
+          reviewData=data.fields;
+          clinicAge=calcClinicAge(data.fields["Opening Date (from Clinic)"]||data.fields["Opening Date"]);
+          isLocked=data.fields["Status"]==="Completed";
+          document.getElementById("headerTitle").textContent=(data.fields["Clinic (from Clinic)"]||data.fields["Clinic"]||"")+" — "+data.fields["Quarter"]+" "+data.fields["Year"];
+          renderForm();
+        } else { useDemoMode(); }
+      }).catch(function(){ useDemoMode(); });
+  } else {
+    useDemoMode();
+  }
+})();
 </script>
 </body>
 </html>
