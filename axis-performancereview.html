@@ -569,10 +569,10 @@ function mapRatingToAirtable(rating) {
 
 function mapStatusToAirtable(status) {
   var map = {
-    "Needs Improvement": "Red",
-    "Meets Expectations": "Yellow",
-    "Exceeds": "Green",
-    "Elite": "Green"
+    "Needs Improvement": "Needs Improvement",
+    "Meets Expectations": "Meets Expectation",
+    "Exceeds": "Exceeds Expectation",
+    "Elite": "Elite"
   };
   return map[status] || null;
 }
