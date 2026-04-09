@@ -162,7 +162,7 @@ var formData={
   focus_next_qtr:"",
   owner_notes:""
 };
-METRICS.forEach(function(m){formData.metrics[m.id]={actual:"";};});
+METRICS.forEach(function(m){formData.metrics[m.id]={actual:""};});
 
 function getParam(n){return new URLSearchParams(window.location.search).get(n);}
 
