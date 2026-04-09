@@ -90,7 +90,7 @@ tr:last-child td{border-bottom:none}
         </svg>
       </div>
       <div>
-        <h1><span class="h1-brand">Axis Spine</span> <span class="h1-and">and</span> <span class="h1-brand">Sport</span></h1>
+        <h1 style="color:#fff;font-size:22px;font-weight:800;margin:0;line-height:1.2">Axis Spine and Sport</h1>
         <p class="header-sub">CLINIC QUARTERLY PERFORMANCE REVIEW</p>
       </div>
     </div>
@@ -280,12 +280,7 @@ function updateAutoRating(){
   }
 }
 
-function useDemoMode(){
-  reviewData={"Clinic (from Clinic)":"Tempe","Quarter":"Q2","Year":"2026","Opening Date (from Clinic)":"2022-03-01","Status":"Not Started"};
-  clinicAge=calcClinicAge("2022-03-01");
-  document.getElementById("headerTitle").textContent="Tempe — Q2 2026 (Demo)";
-  renderForm();
-}
+
 
 function renderForm(){
   var body=document.getElementById("appBody");
@@ -593,23 +588,44 @@ function copyFB(){
 
 // ── INIT ──
 (function(){
-  recordId=getParam("recordId");
-  if(recordId && WORKER_URL.indexOf("YOUR-WORKER")===-1){
+  recordId = getParam("recordId");
+  if(recordId && WORKER_URL.indexOf("YOUR-WORKER") === -1){
     fetch(WORKER_URL+"/api/quarterly-review?recordId="+recordId)
       .then(function(r){ return r.json(); })
       .then(function(data){
         if(data.fields){
-          reviewData=data.fields;
-          clinicAge=calcClinicAge(data.fields["Opening Date (from Clinic)"]||data.fields["Opening Date"]);
-          isLocked=data.fields["Status"]==="Completed";
-          document.getElementById("headerTitle").textContent=(data.fields["Clinic (from Clinic)"]||data.fields["Clinic"]||"")+" — "+data.fields["Quarter"]+" "+data.fields["Year"];
+          reviewData = data.fields;
+          clinicAge  = calcClinicAge(data.fields["Opening Date (from Clinic)"] || data.fields["Opening Date"]);
+          isLocked   = data.fields["Status"] === "Completed";
+          document.getElementById("headerTitle").textContent =
+            (data.fields["Clinic (from Clinic)"] || data.fields["Clinic"] || "") +
+            " — " + data.fields["Quarter"] + " " + data.fields["Year"];
           renderForm();
-        } else { useDemoMode(); }
-      }).catch(function(){ useDemoMode(); });
+        } else {
+          showError("Record not found. Please open this form from the Airtable button.");
+        }
+      }).catch(function(){
+        showError("Unable to load review. Please check your connection and try again.");
+      });
+  } else if(!recordId) {
+    showError("No review record specified. Please open this form from the Airtable scorecard button.");
   } else {
-    useDemoMode();
+    showError("Worker not yet configured. Update WORKER_URL in the HTML file before deploying.");
   }
 })();
+
+function showError(msg){
+  var body = document.getElementById("appBody");
+  body.innerHTML = '';
+  var card = mk("div","card");
+  card.style.cssText = "text-align:center;padding:60px 40px";
+  card.innerHTML =
+    '<div style="font-size:32px;margin-bottom:16px">&#9888;</div>'+
+    '<div style="font-size:15px;font-weight:700;color:#000;margin-bottom:8px">Unable to Load Review</div>'+
+    '<div style="font-size:13px;color:#767b7f;max-width:400px;margin:0 auto">'+msg+'</div>';
+  body.appendChild(card);
+  document.getElementById("headerTitle").textContent = "Error";
+}
 </script>
 </body>
 </html>
