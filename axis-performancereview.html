@@ -28,9 +28,12 @@ input,select,textarea,button{font-family:'Montserrat',sans-serif}
 .narr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
 .rating-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 label.lbl{display:block;font-size:11px;font-weight:600;color:#767b7f;margin-bottom:4px;letter-spacing:.3px;text-transform:uppercase}
-.field{width:100%;border:1px solid #c3cace;border-radius:6px;padding:8px 10px;font-size:13px;outline:none;color:#000;background:#fff}
-.field:focus{border-color:#e5be5e}
-textarea.field{resize:vertical}
+.field{width:100%;border:1px solid rgba(229,190,94,.3);border-radius:6px;padding:8px 10px;font-size:13px;outline:none;color:#1a1a1a;background:rgba(229,190,94,.07);font-weight:700}
+.field:focus{border-color:#e5be5e;background:rgba(229,190,94,.12)}
+textarea.field{resize:vertical;font-weight:400;background:#fff;border:1px solid #c3cace;color:#000}
+textarea.field:focus{border-color:#e5be5e}
+select.field{font-weight:700;color:#1a1a1a}
+input[type="date"].field{font-weight:700;color:#1a1a1a}
 .field-locked{width:100%;border:1px solid rgba(229,190,94,.3);border-radius:6px;padding:8px 10px;font-size:13px;background:rgba(229,190,94,.07);color:#1a1a1a;font-weight:700;min-height:36px;display:flex;align-items:center}
 .tbl-wrap{overflow-x:auto;margin-top:14px}
 table{width:100%;border-collapse:collapse;font-size:13px}
@@ -351,11 +354,11 @@ function renderForm(){
     var inp=mk("input","field");
     inp.type="text"; inp.placeholder=m.unit==="$"?"$0":m.unit==="%"?"0%":"0";
     inp.value=formData.metrics[m.id].actual||""; inp.disabled=isLocked;
+    inp.style.cssText="background:#fff;border-color:#c3cace;font-weight:400;color:#000";
     (function(metric){inp.addEventListener("input",function(e){formData.metrics[metric.id].actual=e.target.value;updateMetricRow(metric);updateAutoRating();});})(m);
     td3.appendChild(inp);
     var td4=mk("td"); td4.style.textAlign="center"; td4.id="pct-"+m.id;
-    var td5=mk("td"); td5.style.textAlign="center"; td5.id="st-"+m.id;
-    tr.append(td1,td2,td3,td4,td5); tbody.appendChild(tr);
+    var td5=mk("td"); td5.style.textAlign="center"; td5.id="st-"+m.id;    tr.append(td1,td2,td3,td4,td5); tbody.appendChild(tr);
   });
   tbl.appendChild(tbody); tw.appendChild(tbl); s2.appendChild(tw);
   var tn=mk("p"); tn.style.cssText="font-size:10px;color:#767b7f;margin-top:8px;font-style:italic";
